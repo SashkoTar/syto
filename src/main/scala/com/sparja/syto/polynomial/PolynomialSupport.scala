@@ -1,11 +1,12 @@
-package com.sparja.sonia.polynomial
+package com.sparja.syto.polynomial
 
-import org.apache.commons.math3.complex.Complex
+import breeze.math.Complex
+
 
 object PolynomialSupport {
   def calculateCoefficients(roots: List[Complex]): List[Complex] = {
     val z = Coefficient(1.0, 0.0, 1)
-    val r = roots.map(_.negate()).map(root => Coefficient(root.getReal, root.getImaginary, 0))
+    val r = roots.map(_.unary_-).map(root => Coefficient(root.real, root.imag, 0))
     def multiply(acc: List[Coefficient], remainingRoots: List[Coefficient]): List[Coefficient] = {
       if (remainingRoots.nonEmpty) {
         val zacc = acc.map(_.multiply(z))
@@ -17,7 +18,7 @@ object PolynomialSupport {
           .mapValues(_.reduce((a, b) => a.add(b))).values.toList.sortWith(_.degree > _.degree)
     }
     val coefficients = multiply(List(z, r.head), r.tail)
-    coefficients.map(coef => new Complex(coef.real, coef.imaginary))
+    coefficients.map(coef => Complex(coef.real, coef.imaginary))
   }
 
 }
