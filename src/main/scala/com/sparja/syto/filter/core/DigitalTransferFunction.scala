@@ -1,21 +1,15 @@
-package com.sparja.syto.filter.butterworth
+package com.sparja.syto.filter.core
 
 import breeze.math.Complex
-import breeze.numerics.{cos, sin}
 import com.sparja.syto.polynomial.PolynomialSupport
 
-abstract class DigitalButterworthFilter(order: Int, sampleFrequency: Float) {
+abstract class DigitalTransferFunction(approximation: Approximation, order: Int, sampleFrequency: Float) extends TransferFunction{
 
   val zeros = List.fill(order)(Complex.one.unary_-)
 
-  // poles of filter with cutoff = 1 rad/s
-  val normalizedPoles = (1 to order)
-    .map(k => (2 * k - 1) * Math.PI / (2 * order))
-    .map(theta => Complex(-sin(theta), cos(theta))).toList
-
   def calculateCoefficients(): (List[Float], List[Float]) = {
 
-    val scaledPa = preWarpAndTransformToSpecificFilterType(normalizedPoles)
+    val scaledPa = preWarpAndTransformToSpecificFilterType(approximation.normalizedPoles)
 
     val poles = transformBilinear(scaledPa)
 

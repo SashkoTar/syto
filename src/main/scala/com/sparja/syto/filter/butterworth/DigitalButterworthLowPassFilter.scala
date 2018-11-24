@@ -1,28 +1,14 @@
 package com.sparja.syto.filter.butterworth
 
-import breeze.math.Complex
-import org.apache.commons.math3.util.FastMath.tan
+import com.sparja.syto.filter.core.{LowPassTransferFunction, TransferFunction}
 
 object DigitalButterworthLowPassFilter {
-
-  def apply(order: Int, cutoffFrequency: Float, sampleFrequency: Float): DigitalButterworthLowPassFilter =
-    new DigitalButterworthLowPassFilter(order, cutoffFrequency, sampleFrequency)
-
-}
-
-
-class DigitalButterworthLowPassFilter(order: Int, cutoffFrequency: Float, sampleFrequency: Float)
-  extends DigitalButterworthFilter(order, sampleFrequency) {
-
-  def preWarpAndTransformToSpecificFilterType(pa: List[Complex]) = {
-    //continuous pre-warped frequency
-    val preWarpedFrequency = sampleFrequency / Math.PI * tan(Math.PI * cutoffFrequency / sampleFrequency)
-
-    //scale poles by 2*pi*Fc
-     pa.map(_ * (2 * Math.PI * preWarpedFrequency)).toList
+  def apply(order: Int, cutoffFrequency: Float, sampleFrequency: Float): TransferFunction = {
+    val approximation = new ButterworthApproximation(order)
+    new LowPassTransferFunction(approximation, order, cutoffFrequency, sampleFrequency)
   }
-
 }
+
 
 /*
   k= 1:N;
