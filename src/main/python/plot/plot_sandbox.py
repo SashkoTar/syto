@@ -70,4 +70,4 @@ def xTowerAcc():
 
 
 if __name__ == "__main__":
-    xTowerAcc()
+    two_plots()

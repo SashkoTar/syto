@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 def xTowerAcc():
     from scipy.io import wavfile
-    rate, audio = wavfile.read('C:\\Projects\\sonia\\src\\main\\resources\\nightingale.wav')
+    rate, audio = wavfile.read('C:\\Projects\\syto\\src\\main\\resources\\nightingale.wav')
     audio = np.mean(audio, axis=1)
     N = audio.shape[0]
     L = N / rate
