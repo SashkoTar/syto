@@ -5,7 +5,7 @@ import breeze.numerics.{cos, sin}
 import com.sparja.syto.filter.core.Approximation
 import org.apache.commons.math3.util.FastMath
 
-class ChebyshevFirstTypeApproximation(order: Int, rp: Float) extends Approximation{
+class ChebyshevFirstTypeApproximation(order: Int, rp: Double) extends Approximation{
 
   val eps = Math.sqrt(Math.pow(10, 0.1 * rp) - 1.0)
   val mu =  FastMath.asinh(1 / eps) / order

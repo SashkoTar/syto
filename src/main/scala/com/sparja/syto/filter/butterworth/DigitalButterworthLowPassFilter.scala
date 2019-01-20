@@ -3,7 +3,7 @@ package com.sparja.syto.filter.butterworth
 import com.sparja.syto.filter.core.{LowPassTransferFunction, TransferFunction}
 
 object DigitalButterworthLowPassFilter {
-  def apply(order: Int, cutoffFrequency: Float, sampleFrequency: Float): TransferFunction = {
+  def apply(order: Int, cutoffFrequency: Double, sampleFrequency: Double): TransferFunction = {
     val approximation = new ButterworthApproximation(order)
     new LowPassTransferFunction(approximation, order, cutoffFrequency, sampleFrequency)
   }

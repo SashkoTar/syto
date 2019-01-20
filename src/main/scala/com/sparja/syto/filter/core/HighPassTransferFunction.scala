@@ -1,10 +1,9 @@
 package com.sparja.syto.filter.core
 
 import breeze.math.Complex
-import com.sparja.syto.filter.core.DigitalTransferFunction
 import org.apache.commons.math3.util.FastMath.tan
 
-class HighPassTransferFunction(approximation: Approximation, order: Int, cutoffFrequency: Float, sampleFrequency: Float)
+class HighPassTransferFunction(approximation: Approximation, order: Int, cutoffFrequency: Double, sampleFrequency: Double)
   extends DigitalTransferFunction(approximation, order, sampleFrequency) {
 
   override val zeros = List.fill(order)(Complex.one)

@@ -3,7 +3,7 @@ package com.sparja.syto.filter.core
 import breeze.math.Complex
 import org.apache.commons.math3.util.FastMath.tan
 
-class LowPassTransferFunction(approximation: Approximation, order: Int, cutoffFrequency: Float, sampleFrequency: Float)
+class LowPassTransferFunction(approximation: Approximation, order: Int, cutoffFrequency: Double, sampleFrequency: Double)
   extends DigitalTransferFunction(approximation, order, sampleFrequency){
 
   def preWarpAndTransformToSpecificFilterType(pa: List[Complex]) = {

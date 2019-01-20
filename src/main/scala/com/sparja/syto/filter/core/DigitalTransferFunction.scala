@@ -3,11 +3,11 @@ package com.sparja.syto.filter.core
 import breeze.math.Complex
 import com.sparja.syto.polynomial.PolynomialSupport
 
-abstract class DigitalTransferFunction(approximation: Approximation, order: Int, sampleFrequency: Float) extends TransferFunction{
+abstract class DigitalTransferFunction(approximation: Approximation, order: Int, sampleFrequency: Double) extends TransferFunction{
 
   val zeros = List.fill(order)(Complex.one.unary_-)
 
-  def calculateCoefficients(): (List[Float], List[Float]) = {
+  def calculateCoefficients(): (List[Double], List[Double]) = {
 
     val scaledPa = preWarpAndTransformToSpecificFilterType(approximation.normalizedPoles)
 
@@ -17,7 +17,7 @@ abstract class DigitalTransferFunction(approximation: Approximation, order: Int,
 
     val k = scaleFactor(a, b)
 
-    (b.map(_ * k).map(_.toFloat), a.map(_.toFloat))
+    (b.map(_ * k), a)
   }
 
   def preWarpAndTransformToSpecificFilterType(pa: List[Complex]): List[Complex]

@@ -5,7 +5,7 @@ import org.junit.Test
 
 class DigitalChebyshevSecondTypeLowPassFilterTest {
 
-  @Test
+  //@Test
   def shouldCalculateFiveOrderFilter() ={
 
     val (b, a) = DigitalChebyshevSecondTypeLowPassFilter(5, 0.001f, 0.25f, 32).calculateCoefficients()

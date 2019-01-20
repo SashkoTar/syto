@@ -10,7 +10,7 @@ def generateTestLowPassButterworthFilter(order, cutoff_fc, sample_fs):
     nyq = 0.5 * sample_fs
     normal_cutoff = cutoff_fc/nyq
     b, a = butter(order, normal_cutoff, btype='low', analog=False)
-    print('val (b, a) = Filter.butterworthLowpassCoefficients({0}, {1}f, {2})'.format(order, cutoff_fc, sample_fs))
+    print('val (b, a) = DigitalButterworthLowPassFilter({0}, {1}f, {2}).calculateCoefficients()'.format(order, cutoff_fc, sample_fs))
     print_assert_equals(a, "a")
     print_assert_equals(b, "b")
 
@@ -52,6 +52,7 @@ if __name__ == "__main__":
     #generateTestBandPassButterworthFilter(2, 18, 22, 100)
     #generateTestBandPassButterworthFilter(3, 40, 170, 1000)
     #normalize_filter()
-    generateTestHighPassButterworthFilter(4, 13, 33)
+    #generateTestHighPassButterworthFilter(4, 13, 33)
+    generateTestLowPassButterworthFilter(3, 10, 40)
 
 
