@@ -24,6 +24,12 @@ def generateTestBandPassChebyshevFirstTypeFilter(order, rp, lowFrew, highFreq):
     print_assert_equals(a, "a")
     print_assert_equals(b, "b")
 
+def generateTestBandStopChebyshevFirstTypeFilter(order, rp, lowFrew, highFreq):
+    b, a = cheby1(order, rp, [lowFrew, highFreq], btype='stop', analog=True)
+    print('val (b, a) = AnalogChebyshevFirstTypeBandStopFilter({0}, {1}f, {2}f, {3}f).calculateCoefficients()'.format(order, rp, lowFrew, highFreq))
+    print_assert_equals(a, "a")
+    print_assert_equals(b, "b")
+
 def listZeroPoles():
     z, p, k = cheby1(5, 10, 1, btype='low', analog=True, output='zpk')
     print("zeros: " + str(z))
@@ -64,7 +70,7 @@ if __name__ == "__main__":
     #polyPrint()
     #generateTestBandPassChebyshevSecondTypeFilter(2, 10, 10, 20)
     #listZeroPolesBandPass()
-    generateTestBandPassChebyshevFirstTypeFilter(5, 10, 10, 30)
+    generateTestBandStopChebyshevFirstTypeFilter(2, 10, 10, 30)
 
 
 
