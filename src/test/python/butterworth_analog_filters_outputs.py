@@ -19,8 +19,14 @@ def generateTestHignPassButterworthFilter(order, cutoff_fc):
     print_assert_equals(b, "b")
 
 def generateTestBandPassButterworthFilter(order, low_freq, high_freq):
-    b, a = butter(order, [low_freq, high_freq], btype='band', analog=True)
+    b, a = butter(order, [low_freq, high_freq], btype='bandpass', analog=True)
     print('val (b, a) = AnalogButterworthBandPassFilter({0}, {1}f, {2}f).calculateCoefficients()'.format(order, low_freq, high_freq))
+    print_assert_equals(a, "a")
+    print_assert_equals(b, "b")
+
+def generateTestBandStopButterworthFilter(order, low_freq, high_freq):
+    b, a = butter(order, [low_freq, high_freq], btype='bandstop', analog=True)
+    print('val (b, a) = AnalogButterworthBandStopFilter({0}, {1}f, {2}f).calculateCoefficients()'.format(order, low_freq, high_freq))
     print_assert_equals(a, "a")
     print_assert_equals(b, "b")
 
@@ -49,7 +55,8 @@ if __name__ == "__main__":
     #listZeroPoles()
     #generateTestHignPassButterworthFilter(7,  344)
     #generateTestBandPassButterworthFilter(2, 10, 20)
-    listZeroPoles2()
+    #listZeroPoles2()
+    generateTestBandStopButterworthFilter(3, 10, 20)
 
 
 
