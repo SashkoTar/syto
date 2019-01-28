@@ -1,4 +1,5 @@
-package com.sparja.syto.filter.chebyshev
+package com.sparja.syto.filter.chebyshev.digital
+
 
 import junit.framework.TestCase.assertEquals
 import org.junit.Test

@@ -1,5 +1,6 @@
-package com.sparja.syto.filter.butterworth
+package com.sparja.syto.filter.butterworth.digital
 
+import com.sparja.syto.filter.butterworth.ButterworthApproximation
 import com.sparja.syto.filter.core.{HighPassTransferFunction, TransferFunction}
 
 object DigitalButterworthHighPassFilter {

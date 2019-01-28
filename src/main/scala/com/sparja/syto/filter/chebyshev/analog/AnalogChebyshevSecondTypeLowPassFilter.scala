@@ -38,12 +38,15 @@ object AnalogChebyshevSecondTypeLowPassFilter {
 
     }
 
+    //TODO Refactore to common schema
+    val scale = 1 // Math.pow(-1, order) * poles.product/zeros.product
+
     def calculateCoefficients(): (List[Double], List[Double]) = {
 
       val a = PolynomialSupport.calculateCoefficients(poles).map(_.real)
       val b = PolynomialSupport.calculateCoefficients(zeros).map(_.real)
 
-      val k = Math.pow(-1, order) * poles.product/zeros.product
+      val k = Math.pow(-1, order) * scale * poles.product/zeros.product
 
       (b.map(_ * k.real), a)
 

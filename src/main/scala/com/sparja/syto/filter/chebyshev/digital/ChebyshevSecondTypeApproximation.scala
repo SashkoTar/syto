@@ -1,4 +1,4 @@
-package com.sparja.syto.filter.chebyshev
+package com.sparja.syto.filter.chebyshev.digital
 
 import breeze.math.Complex
 import breeze.numerics.{cos, sin}

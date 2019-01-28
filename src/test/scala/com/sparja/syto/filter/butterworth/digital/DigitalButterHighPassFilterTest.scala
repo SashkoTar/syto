@@ -1,4 +1,4 @@
-package com.sparja.syto.filter.butterworth
+package com.sparja.syto.filter.butterworth.digital
 
 import junit.framework.TestCase.assertEquals
 import org.junit.Test

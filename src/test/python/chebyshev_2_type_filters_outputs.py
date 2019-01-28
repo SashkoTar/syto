@@ -62,7 +62,7 @@ def plot_chebyshev1_filter(order, rp, cutoff_fc, sample_fs):
 
 if __name__ == "__main__":
     #plot_chebyshev1_filter(5, 0.001, 0.25, 32)
-    generateTestLowPassChebyshevSecondTypeFilter(5, 0.001, 0.25, 32)
+    generateTestLowPassChebyshevSecondTypeFilter(5, 40, 0.25, 32)
     #generateTestHighPassChebyshevFilter(5, 0.001, 0.25, 32)
     #generateTestLowPassButterworthFilter(3, 3.667, 30)
     #generateTestBandPassButterworthFilter(2, 18, 22, 100)

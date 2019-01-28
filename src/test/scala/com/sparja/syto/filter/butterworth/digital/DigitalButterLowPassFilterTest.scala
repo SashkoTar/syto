@@ -1,15 +1,12 @@
-package com.sparja.syto.filter.butterworth
+package com.sparja.syto.filter.butterworth.digital
 
-import com.sparja.syto.filter.core.LowPassTransferFunction
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
-class DigitalButterLowPassFilter2Test {
-
+class DigitalButterLowPassFilterTest {
   @Test
   def shouldCalculateButterworthLowpassCoefficients() = {
-    val butterworth = new ButterworthApproximation(2)
-    val filter = new LowPassTransferFunction(butterworth, 2, 3.667f, 30)
+    val filter = DigitalButterworthLowPassFilter(2, 3.667f, 30)
     val (b, a) = filter.calculateCoefficients()
 
     //Generated code
@@ -53,21 +50,6 @@ class DigitalButterLowPassFilter2Test {
     assertEquals(b(3), 1.04464971671, 0.1)
     assertEquals(b(4), 0.261162429178, 0.1)
   }
-
-  @Test
-  def shouldCalculateButterworthLowpassCoefficients4() = {
-    val (b, a) = DigitalButterworthLowPassFilter(3, 10f, 40).calculateCoefficients()
-    assertEquals(a(0), 1.0, 0.001)
-    assertEquals(a(1), -2.77555756156e-16, 0.00001)
-    assertEquals(a(2), 0.333333333333, 0.00001)
-    assertEquals(a(3), -1.85037170771e-17, 0.00001)
-    assertEquals(b(0), 0.166666666667, 0.00001)
-    assertEquals(b(1), 0.5, 0.00001)
-    assertEquals(b(2), 0.5, 0.00001)
-    assertEquals(b(3), 0.166666666667, 0.00001)
-  }
-
-
 
 
 }

@@ -1,4 +1,4 @@
-import com.sparja.syto.filter.butterworth.DigitalButterworthLowPassFilter
+import com.sparja.syto.filter.butterworth.digital.DigitalButterworthLowPassFilter
 
 def sigma(n: Int):Int = if(n == 0) 1 else 0
 
