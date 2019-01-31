@@ -54,9 +54,10 @@ if __name__ == "__main__":
     #generateTestLowPassChebyshevSecondTypeFilter(4, 40, 100)
     #listZeroPoles()
     #generateTestHignPassButterworthFilter(7,  344)
-    #generateTestBandPassButterworthFilter(2, 10, 20)
+    generateTestBandPassButterworthFilter(3, 10, 20)
     #listZeroPoles2()
-    generateTestBandStopButterworthFilter(3, 10, 20)
+    #generateTestBandStopButterworthFilter(3, 10, 20)
+    #generateTestLowPassButterworthFilter(3, 1)
 
 
 

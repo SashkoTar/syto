@@ -23,6 +23,15 @@ class PolynomialSupportTest {
   }
 
   @Test
+  def shouldReturnOneForEmptyRoots() = {
+    val roots = List.empty[Complex]
+    val coefficients = PolynomialSupport.calculateCoefficients(roots)
+    assertEquals(coefficients.head.real, 1, 0.01)
+    assertEquals(coefficients.size, 1)
+
+  }
+
+  @Test
   def shouldMultiplyCoefficient() = {
     val z = Coefficient(1.0, 0.0, 1)
     val p = Coefficient(2.0, 0.5, 0)

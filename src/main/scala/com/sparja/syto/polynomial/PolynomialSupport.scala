@@ -17,7 +17,8 @@ object PolynomialSupport {
         acc.groupBy(_.degree)
           .mapValues(_.reduce((a, b) => a.add(b))).values.toList.sortWith(_.degree > _.degree)
     }
-    val coefficients = multiply(List(z, r.head), r.tail)
+    //TODO Review this calculations
+    val coefficients = if (r.isEmpty) List(z) else multiply(List(z, r.head), r.tail)
     coefficients.map(coef => Complex(coef.real, coef.imaginary))
   }
 

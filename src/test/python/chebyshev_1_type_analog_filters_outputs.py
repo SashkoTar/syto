@@ -12,7 +12,7 @@ def generateTestLowPassChebyshevSecondTypeFilter(order, rp, cutoff_fc):
     print_assert_equals(a, "a")
     print_assert_equals(b, "b")
 
-def generateTestHighPassChebyshevSecondTypeFilter(order, rp, cutoff_fc):
+def generateTestHighPassChebyshevFirstTypeFilter(order, rp, cutoff_fc):
     b, a = cheby1(order, rp, cutoff_fc, btype='high', analog=True)
     print('val (b, a) = AnalogChebyshevSecondTypeHighPassFilter({0}, {1}f, {2}f).calculateCoefficients()'.format(order, rp, cutoff_fc))
     print_assert_equals(a, "a")
@@ -70,7 +70,8 @@ if __name__ == "__main__":
     #polyPrint()
     #generateTestBandPassChebyshevSecondTypeFilter(2, 10, 10, 20)
     #listZeroPolesBandPass()
-    generateTestBandStopChebyshevFirstTypeFilter(2, 10, 10, 30)
+    #generateTestBandStopChebyshevFirstTypeFilter(2, 10, 10, 30)
+    generateTestHighPassChebyshevFirstTypeFilter(4, 40, 15)
 
 
 
