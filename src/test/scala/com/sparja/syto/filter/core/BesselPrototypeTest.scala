@@ -7,7 +7,7 @@ class BesselPrototypeTest {
 
   def calculateRoots(order: Int) = Prototype.bessel(order)
 
-  //@Test
+  @Test
   def shouldCalculateTwoOrderPrototype() = {
     val roots = calculateRoots(2)
     assertEquals(roots.scale, 1.0, 0.001)

@@ -6,6 +6,11 @@ import org.apache.commons.math3.util.FastMath
 
 object Prototype {
 
+  def elliptic(order: Int, rs: Double, rp: Double) = {
+    Roots(List.empty[Complex], List.empty[Complex], 1.0)
+  }
+
+
   def bessel(order: Int): Roots = {
      Roots(List.empty[Complex], List.empty[Complex], 1.0)
   }

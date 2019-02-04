@@ -47,10 +47,10 @@ def generatePrototypeRoots(order, rp, rs):
 
 
 if __name__ == "__main__":
-    #generatePrototypeRoots(3, 5, 40)
+    generatePrototypeRoots(2, 5, 40)
     #generateTestLowPassFilter(2, 10, 5, 40)
     #generateTestHighPassFilter(3, 10, 5, 40)
     #generateTestBandPassFilter(2, 10, 20, 5, 40)
-    generateTestBandStopFilter(3, 10, 20, 5, 40, 50)
+    #generateTestBandStopFilter(3, 10, 20, 5, 40, 50)
 
 
