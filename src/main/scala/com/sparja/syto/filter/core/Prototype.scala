@@ -6,6 +6,11 @@ import org.apache.commons.math3.util.FastMath
 
 object Prototype {
 
+  def bessel(order: Int): Roots = {
+     Roots(List.empty[Complex], List.empty[Complex], 1.0)
+  }
+
+
   def butterworth(order: Int) = {
     val poles = (1 to order)
       .map(k => (2 * k - 1) * Math.PI / (2 * order))

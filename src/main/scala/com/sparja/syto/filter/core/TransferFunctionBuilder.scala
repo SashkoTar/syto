@@ -23,6 +23,12 @@ class TransferFunctionBuilder {
     this
   }
 
+
+  def prototype(f:() => Roots) = {
+    prototypesRoots = f()
+    roots = f()
+    this
+  }
   def prototype(f:(Int, Double) => Roots, order: Int, ripple: Double ) = {
     prototypesRoots = f(order, ripple)
     roots = f(order, ripple)
