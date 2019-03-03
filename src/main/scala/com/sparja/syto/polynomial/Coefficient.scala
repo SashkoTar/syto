@@ -16,4 +16,11 @@ case class Coefficient(real: Double, imaginary: Double, degree: Int) {
     Coefficient(ab.real, ab.imag, degree)
   }
 
+  override def toString = {
+    degree  match {
+      case 0 => s"$real"
+      case 1 => s"${real}x"
+      case _ => s"${real}x^${degree}"
+    }
+  }
 }

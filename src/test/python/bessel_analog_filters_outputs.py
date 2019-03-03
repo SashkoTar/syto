@@ -7,7 +7,7 @@ def print_assert_equals(coefficients, type):
         print('assertEquals({0}({1}), {2}, 0.001)'.format(type, idx, val))
 
 def generateTestLowPassButterworthFilter(order, cutoff_fc):
-    b, a = bessel(order, cutoff_fc, btype='low', analog=True)
+    b, a = bessel(order, cutoff_fc, btype='low', analog=True, norm='delay')
     print('val (b, a) = AnalogButterworthLowPassFilter({0}, {1}f).calculateCoefficients()'.format(order, cutoff_fc))
     print_assert_equals(a, "a")
     print_assert_equals(b, "b")
@@ -38,7 +38,8 @@ def generateTestRootsBesselFilter(order):
     print_assert_equals(p, "p")
 
 def generateTestRootsBesselFilter2(order):
-    z, p, k = besselap(order)
+    z, p, k = besselap(order, norm='delay')
+    #z, p, k = besselap(order)
     print('val (z, p, k) = calculateRoots({0})'.format(order))
     print('assertEquals(k, {0}, 0.001)'.format(k))
     print_assert_equals(z, "z")
@@ -61,10 +62,10 @@ if __name__ == "__main__":
     #generateTestHignPassButterworthFilter(7,  344)
     #listZeroPoles2()
     #generateTestBandStopButterworthFilter(3, 10, 20)
-    #generateTestLowPassButterworthFilter(3, 3)
-    #generateTestRootsBesselFilter2(3)
+    #generateTestLowPassButterworthFilter(3, 1)
+    generateTestRootsBesselFilter2(20)
     #generateTestHignPassBesselFilter(3, 10)
     #generateTestBandPassBesselFilter(3, 10, 20)
-    generateTestBandStopBesselFilter(3, 10, 20)
+    #generateTestBandStopBesselFilter(3, 10, 20)
 
 
