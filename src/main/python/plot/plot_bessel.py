@@ -1,9 +1,9 @@
 """Plot some Bessel functions of integer order, using Scipy and pylab"""
 
+import matplotlib.pyplot as plt
+import numpy as np
 from scipy import special
 
-import numpy as np
-import matplotlib.pyplot as plt
 
 def jn_asym(n,x):
     """Asymptotic form of jn(x) for x>>n"""

@@ -2,6 +2,8 @@ package com.sparja.syto.filter.core
 
 import breeze.math.Complex
 import breeze.numerics.{cos, sin, sqrt}
+import com.sparja.syto.polynomial.BesselPolynomial
+import com.sparja.syto.polynomial.root.WeierstrassRootFinder
 import org.apache.commons.math3.util.FastMath
 
 object Prototype {
@@ -10,9 +12,71 @@ object Prototype {
     Roots(List.empty[Complex], List.empty[Complex], 1.0)
   }
 
+  //TODO extract to specific module
+  def normFactor(p: List[Complex], k: Double ): Double = {
+    //1.7556723686
 
-  def bessel(order: Int): Roots = {
-     Roots(List.empty[Complex], List.empty[Complex], 1.0)
+    def G(w: Double) = {
+      //""" Gain of filter """
+      //return abs(k / prod(1j*w - p))
+      k/p.map(Complex.i*w - _).product.abs
+    }
+
+    def cutoff(w: Double): Double = {
+      //""" When gain = -3 dB, return 0 """
+      G(w) - 1/math.sqrt(2)
+    }
+
+    //TODO extract to separate module
+    def secantMethod(f:(Double)=> Double, x0: Double, x1: Double): Double = {
+      val x2 = x1 - f(x1)*(x1 - x0)/(f(x1) - f(x0))
+      if (math.abs(x2 - x1) < 0.001)
+        x2
+      else
+        secantMethod(f, x1, x2)
+    }
+
+    secantMethod(cutoff, 1.0, 1.5)
+
+  }
+
+
+  //TODO extend to find diff normalization - delay, mag, phase
+  //  # Phase-matched (1/2 max phase shift at 1 rad/sec)
+  //  # Asymptotes are same as Butterworth filter
+  //    p = 1/_bessel_zeros(N)
+  //    a_last = _falling_factorial(2*N, N) // 2**N
+  //    p *= 10**(-math.log10(a_last)/N)
+  //    k = 1
+  def bessel(order: Int, norm: String = "phase"): Roots = {
+
+    def fallingFactorial(x: Int, n: Int) = (0 to n-1).map(x - _).product
+
+    val zeros = List.empty
+    val pol = BesselPolynomial.calculate(order)
+    val roots = WeierstrassRootFinder.solve(pol)
+    val a_last = fallingFactorial(2*order, order) / math.pow(2, order).toInt
+    val reversedPoles = roots.map(1/_)
+
+    if (norm == "phase") {
+      val degree = -math.log10(a_last)/order
+      val poles = reversedPoles.map(_ * math.pow(10, degree))
+      return Roots(zeros, poles, 1.0)
+    }
+    if (norm == "delay") {
+      val poles = roots.map(1/_)
+      return Roots(zeros, reversedPoles, a_last)
+    }
+    if (norm == "mag") {
+     // norm_factor = _norm_factor(p, k)
+     // p /= norm_factor
+     // k = norm_factor**-N * a_last
+      val factor = normFactor(reversedPoles, a_last)
+      val normalizedRoots = reversedPoles.map(_ / factor)
+      val k = math.pow(factor, -order) * a_last
+      return Roots(zeros, normalizedRoots, k)
+    }
+    Roots(zeros, List.empty, 1.0)
   }
 
 

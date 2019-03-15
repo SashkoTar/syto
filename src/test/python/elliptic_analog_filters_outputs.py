@@ -1,6 +1,5 @@
-import numpy as np
-import matplotlib.pyplot as plt
-from scipy.signal import besselap, bessel, ellipap, ellip, freqz
+from scipy.signal import ellipap, ellip
+
 
 def print_assert_equals(coefficients, type):
     for idx, val in enumerate(coefficients):

@@ -1,6 +1,5 @@
-import numpy as np
-import matplotlib.pyplot as plt
-from scipy.signal import besselap, bessel, freqz
+from scipy.signal import besselap, bessel
+
 
 def print_assert_equals(coefficients, type):
     for idx, val in enumerate(coefficients):
@@ -24,7 +23,7 @@ def generateTestBandPassBesselFilter(order, lowcut_fc, highcut_fc, sample_fs):
     nyq = 0.5 * sample_fs
     low = lowcut_fc / nyq
     high = highcut_fc / nyq
-    b, a = bessel(order, [low, high], btype='bandpass', analog=False)
+    b, a = bessel(order, [low, high], btype='bandpass', analog=False, norm="mag")
 
     print('val (b, a) = AnalogButterworthBandPassFilter({0}, {1}f, {2}f).calculateCoefficients()'.format(order, low, high))
     print_assert_equals(a, "a")
@@ -71,6 +70,6 @@ if __name__ == "__main__":
     #generateTestRootsBesselFilter2(3)
     #generateTestHignPassBesselFilter(3, 10)
     #generateTestBandPassBesselFilter(3, 10, 20)
-    generateTestBandPassBesselFilter(2, 10, 20, 50)
+    generateTestBandPassBesselFilter(3, 10, 20, 50)
 
 

@@ -1,8 +1,7 @@
 package com.sparja.syto.polynomial
 
 import breeze.math.Complex
-
-import junit.framework.TestCase.{assertEquals, assertTrue}
+import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
 

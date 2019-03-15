@@ -1,6 +1,7 @@
 package com.sparja.syto.sound
 
 import java.io.FileInputStream
+
 import sun.audio.{AudioPlayer, AudioStream}
 
 object WavePlayer {

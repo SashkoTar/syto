@@ -1,6 +1,7 @@
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 from scipy.signal import butter, freqz
+
 
 def print_assert_equals(coefficients, type):
     for idx, val in enumerate(coefficients):

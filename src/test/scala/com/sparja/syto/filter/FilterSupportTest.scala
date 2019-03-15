@@ -1,7 +1,5 @@
 package com.sparja.syto.filter
 
-import breeze.math.Complex
-import breeze.numerics.{cos, sin}
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 

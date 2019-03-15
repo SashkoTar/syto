@@ -1,5 +1,5 @@
 import breeze.math.Complex
-import breeze.numerics.{cos, sin}
+import breeze.numerics.sin
 
 
 val order = 5

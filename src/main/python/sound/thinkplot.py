@@ -8,12 +8,13 @@ License: GNU GPLv3 http://www.gnu.org/licenses/gpl.html
 from __future__ import print_function
 
 import math
+import warnings
+
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas
 
-import warnings
 
 # customize some matplotlib attributes
 #matplotlib.rc('figure', figsize=(4, 3))

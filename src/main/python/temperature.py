@@ -1,5 +1,6 @@
-from datetime import datetime
 import csv
+from datetime import datetime
+
 import numpy as np
 
 startdate = '20111118'

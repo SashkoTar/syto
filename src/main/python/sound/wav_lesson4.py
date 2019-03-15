@@ -1,10 +1,8 @@
-import thinkdsp
-import thinkplot
-import numpy as np
-import matplotlib.pyplot as plt
-from thinkdsp import Sinusoid, Chirp
 import math
-import thinkstats2
+
+import matplotlib.pyplot as plt
+
+import thinkdsp
 
 PI2 = math.pi * 2
 

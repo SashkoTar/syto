@@ -7,24 +7,20 @@ License: GNU GPLv3 http://www.gnu.org/licenses/gpl.html
 
 from __future__ import print_function, division
 
-import array
 import copy
 import math
-
-import numpy as np
 import random
-import scipy
-import scipy.stats
-import scipy.fftpack
-import struct
 import subprocess
-import thinkplot
 import warnings
-
-from fractions import gcd
 from wave import open as open_wave
 
 import matplotlib.pyplot as pyplot
+import numpy as np
+import scipy
+import scipy.fftpack
+import scipy.stats
+
+import thinkplot
 
 try:
     from IPython.display import Audio

@@ -1,9 +1,8 @@
 package com.sparja.syto.util
 
 import breeze.math.Complex
+import junit.framework.TestCase.{assertFalse, assertTrue}
 import org.junit.Test
-import junit.framework.TestCase.assertTrue
-import junit.framework.TestCase.assertFalse
 
 class ComplexAssertionTest {
 

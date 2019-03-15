@@ -1,6 +1,5 @@
 package com.sparja.syto.filter.elliptic.analog
 
-import com.sparja.syto.filter.bessel.BesselMockedPrototypeRoots
 import com.sparja.syto.filter.core.{Roots, TransferFunctionBuilder}
 import com.sparja.syto.filter.elliptic.EllipticMockedPrototypeRoots
 import junit.framework.TestCase.assertEquals

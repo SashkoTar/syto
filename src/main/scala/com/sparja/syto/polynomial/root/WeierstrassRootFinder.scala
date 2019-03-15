@@ -18,7 +18,7 @@ object WeierstrassRootFinder {
   //Weierstrass  correction
   def correct(aN: Double, roots: List[Complex], epsilon: Double, func: (Complex) => Complex): List[Complex] = {
 
-    printRoots(roots)
+  //  printRoots(roots)
 
     val correctedRoos = roots.map(x => (x, roots.filter(_ != x).map(x - _).product))
       .map { case (x, root) => x - func(x) / (aN * root) }

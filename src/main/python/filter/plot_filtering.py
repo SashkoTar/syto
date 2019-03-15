@@ -1,6 +1,6 @@
-import numpy as np
-from scipy.signal  import butter, lfilter, tf2ss
 import matplotlib.pyplot as plt
+import numpy as np
+from scipy.signal import butter, lfilter
 
 # building the test signal, a sum of two sines;
 N = 32

@@ -1,9 +1,10 @@
 from __future__ import division, print_function
-import numpy as np
-from numpy.random import randn
-from numpy.fft import rfft
-from scipy import signal
+
 import matplotlib.pyplot as plt
+import numpy as np
+from numpy.fft import rfft
+from numpy.random import randn
+from scipy import signal
 
 b, a = signal.butter(4, 0.03, analog=False)
 

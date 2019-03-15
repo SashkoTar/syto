@@ -1,8 +1,7 @@
 package com.sparja.syto.util
 
 import breeze.math.Complex
-import junit.framework.TestCase.assertTrue
-import junit.framework.TestCase.assertFalse
+import junit.framework.TestCase.{assertFalse, assertTrue}
 
 object ComplexAssertion {
 
@@ -20,7 +19,7 @@ object ComplexAssertion {
 
   //TODO Consider private modifier
   def contains(actual: List[Complex], element: Complex): Boolean = {
-    actual.find(item => isEqual(item, element, 0.01)) match {
+    actual.find(item => isEqual(item, element, 0.0001)) match {
       case Some(element) => true
       case None => false
     }

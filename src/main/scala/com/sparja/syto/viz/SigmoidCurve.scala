@@ -1,9 +1,8 @@
 package com.sparja.syto.viz
 
-import breeze.numerics.sigmoid
-import breeze.plot.Figure
-import breeze.plot._
 import breeze.linalg.linspace
+import breeze.numerics.sigmoid
+import breeze.plot.{Figure, _}
 import org.jfree.chart.axis.NumberTickUnit
 import org.jfree.chart.plot.ValueMarker
 

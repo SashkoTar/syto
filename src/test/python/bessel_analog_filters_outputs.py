@@ -1,6 +1,5 @@
-import numpy as np
-import matplotlib.pyplot as plt
-from scipy.signal import besselap, bessel, freqz
+from scipy.signal import besselap, bessel
+
 
 def print_assert_equals(coefficients, type):
     for idx, val in enumerate(coefficients):
@@ -38,8 +37,8 @@ def generateTestRootsBesselFilter(order):
     print_assert_equals(p, "p")
 
 def generateTestRootsBesselFilter2(order):
-    z, p, k = besselap(order, norm='delay')
-    #z, p, k = besselap(order)
+    #z, p, k = besselap(order, norm='delay')
+    z, p, k = besselap(order, norm='mag')
     print('val (z, p, k) = calculateRoots({0})'.format(order))
     print('assertEquals(k, {0}, 0.001)'.format(k))
     print_assert_equals(z, "z")
@@ -63,7 +62,7 @@ if __name__ == "__main__":
     #listZeroPoles2()
     #generateTestBandStopButterworthFilter(3, 10, 20)
     #generateTestLowPassButterworthFilter(3, 1)
-    generateTestRootsBesselFilter2(20)
+    generateTestRootsBesselFilter2(3)
     #generateTestHignPassBesselFilter(3, 10)
     #generateTestBandPassBesselFilter(3, 10, 20)
     #generateTestBandStopBesselFilter(3, 10, 20)

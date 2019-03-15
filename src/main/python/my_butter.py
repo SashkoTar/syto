@@ -1,10 +1,6 @@
 import numpy
-import numpy as np
-from numpy import (atleast_1d, poly, polyval, roots, real, asarray,
-                   resize, pi, absolute, logspace, r_, sqrt, tan, log10,
-                   arctan, arcsinh, sin, exp, cosh, arccosh, ceil, conjugate,
-                   zeros, sinh, append, concatenate, prod, ones, array,
-                   mintypecode)
+from numpy import (atleast_1d, poly, real, asarray,
+                   pi, sqrt, tan, zeros, append, concatenate, prod, ones)
 
 def my_butter(order, lowcut, highcut, btype='band'):
 

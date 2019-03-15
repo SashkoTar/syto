@@ -1,6 +1,6 @@
-from scipy import signal
 import matplotlib.pyplot as plt
 import numpy as np
+from scipy import signal
 
 b, a = signal.cheby2(4, 40, 100, 'low', analog=True)
 w, h = signal.freqs(b, a)
