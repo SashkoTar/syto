@@ -13,23 +13,21 @@ object Prototype {
   }
 
   //TODO extract to specific module
-  def normFactor(p: List[Complex], k: Double ): Double = {
-    //1.7556723686
+  private[core] def normFactor(p: List[Complex], k: Double): Double = {
 
     def G(w: Double) = {
       //""" Gain of filter """
       //return abs(k / prod(1j*w - p))
-      k/p.map(Complex.i*w - _).product.abs
+      k / p.map(Complex.i * w - _).product.abs
     }
 
     def cutoff(w: Double): Double = {
       //""" When gain = -3 dB, return 0 """
-      G(w) - 1/math.sqrt(2)
+      G(w) - 1 / math.sqrt(2)
     }
 
-    //TODO extract to separate module
-    def secantMethod(f:(Double)=> Double, x0: Double, x1: Double): Double = {
-      val x2 = x1 - f(x1)*(x1 - x0)/(f(x1) - f(x0))
+    def secantMethod(f: (Double) => Double, x0: Double, x1: Double): Double = {
+      val x2 = x1 - f(x1) * (x1 - x0) / (f(x1) - f(x0))
       if (math.abs(x2 - x1) < 0.001)
         x2
       else
@@ -50,33 +48,34 @@ object Prototype {
   //    k = 1
   def bessel(order: Int, norm: String = "phase"): Roots = {
 
-    def fallingFactorial(x: Int, n: Int) = (0 to n-1).map(x - _).product
+    def fallingFactorial(x: Int, n: Int) = (0 until n).map(x - _).product
 
     val zeros = List.empty
     val pol = BesselPolynomial.calculate(order)
     val roots = WeierstrassRootFinder.solve(pol)
-    val a_last = fallingFactorial(2*order, order) / math.pow(2, order).toInt
-    val reversedPoles = roots.map(1/_)
+    val a_last = fallingFactorial(2 * order, order) / math.pow(2, order).toInt
+    val reversedPoles = roots.map(1 / _)
 
-    if (norm == "phase") {
-      val degree = -math.log10(a_last)/order
-      val poles = reversedPoles.map(_ * math.pow(10, degree))
-      return Roots(zeros, poles, 1.0)
+    norm match {
+
+      case "phase" =>
+        val degree = -math.log10(a_last) / order
+        val poles = reversedPoles.map(_ * math.pow(10, degree))
+        Roots(zeros, poles, 1.0)
+
+      case "delay" =>
+        val poles = roots.map(1 / _)
+        Roots(zeros, reversedPoles, a_last)
+
+      case "mag" =>
+        val factor = normFactor(reversedPoles, a_last)
+        val normalizedRoots = reversedPoles.map(_ / factor)
+        val k = math.pow(factor, -order) * a_last
+        Roots(zeros, normalizedRoots, k)
+
+      case _ => throw new IllegalArgumentException("The parameter 'norm' is incorrect. Must one of [phase, delay, mag]")
     }
-    if (norm == "delay") {
-      val poles = roots.map(1/_)
-      return Roots(zeros, reversedPoles, a_last)
-    }
-    if (norm == "mag") {
-     // norm_factor = _norm_factor(p, k)
-     // p /= norm_factor
-     // k = norm_factor**-N * a_last
-      val factor = normFactor(reversedPoles, a_last)
-      val normalizedRoots = reversedPoles.map(_ / factor)
-      val k = math.pow(factor, -order) * a_last
-      return Roots(zeros, normalizedRoots, k)
-    }
-    Roots(zeros, List.empty, 1.0)
+
   }
 
 
@@ -88,20 +87,20 @@ object Prototype {
     Roots(zeros, poles, 1.0)
   }
 
-    //TODO investigate how use object to improve the code
+  //TODO investigate how use object to improve the code
   //object chebyshevII
 
   def chebyshevII(order: Int, rp: Double) = {
     val zeros = {
-      val n = if (order%2 == 0) order / 2 else (order - 1) / 2
-      val first =  (1 to n).map(k => (2 * k - 1) * Math.PI / (2 * order))
-        .map(theta => Complex.i/cos(theta)).toList
-      first:::first.map(_.conjugate)
+      val n = if (order % 2 == 0) order / 2 else (order - 1) / 2
+      val first = (1 to n).map(k => (2 * k - 1) * Math.PI / (2 * order))
+        .map(theta => Complex.i / cos(theta)).toList
+      first ::: first.map(_.conjugate)
     }
 
     val poles = {
       val eps = Math.sqrt(Math.pow(10, 0.1 * rp) - 1.0)
-      val mu =  FastMath.asinh(eps) / order
+      val mu = FastMath.asinh(eps) / order
 
       def r(theta: Double) = -sin(theta) * Math.sinh(mu) / (cos(theta) * Math.cosh(mu) * cos(theta) * Math.cosh(mu) + sin(theta) * Math.sinh(mu) * sin(theta) * Math.sinh(mu))
 
@@ -112,14 +111,14 @@ object Prototype {
         .map(theta => Complex(r(theta), im(theta))).toList
 
     }
-    val scale = Math.pow(-1, order) * poles.product/zeros.product
+    val scale = Math.pow(-1, order) * poles.product / zeros.product
 
     Roots(zeros, poles, scale.real)
   }
 
   def chebyshev(order: Int, rp: Double) = {
     val eps = Math.sqrt(Math.pow(10, 0.1 * rp) - 1.0)
-    val mu =  FastMath.asinh(1 / eps) / order
+    val mu = FastMath.asinh(1 / eps) / order
 
     val zeros = List.empty[Complex]
 
@@ -129,7 +128,7 @@ object Prototype {
         .map(theta => Complex(-sin(theta) * Math.sinh(mu), cos(theta) * Math.cosh(mu))).toList
     }
 
-    val scale = Math.pow(-1, order) * (if (order%2 == 0) poles.product/sqrt(1 + eps*eps) else poles.product)
+    val scale = Math.pow(-1, order) * (if (order % 2 == 0) poles.product / sqrt(1 + eps * eps) else poles.product)
 
     Roots(zeros, poles, scale.real)
   }
