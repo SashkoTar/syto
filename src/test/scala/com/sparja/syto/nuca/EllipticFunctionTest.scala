@@ -4,7 +4,7 @@ import breeze.math.Complex
 import breeze.numerics.sin
 import com.sparja.syto.polynomial.PolynomialSupport
 import junit.framework.TestCase.assertEquals
-import com.sparja.syto.nuca.EllipticFunction.{ellipk, ellipInc}
+import com.sparja.syto.nuca.EllipticFunction.{ellipk, ellipInc, nextAm}
 import org.junit.Test
 
 class EllipticFunctionTest {
@@ -37,12 +37,15 @@ class EllipticFunctionTest {
     assertEquals(f, 2.1565, 0.001)
   }
 
-  @Test
+  //@Test
   def shouldCalculateIncompleteCompleteFirstKind60 = {
     def f = ellipkIncDegree(60, 40)
     assertEquals(f, 1.1226, 0.001)
   }
 
-
+  @Test
+  def calculatePhi() = {
+    println(nextAm(1/math.sqrt(2), math.Pi/6))
+  }
 
 }

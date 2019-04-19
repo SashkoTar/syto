@@ -19,7 +19,6 @@ object EllipticFunction {
 
 
   def ellipInc(k: Double, am: Double) = {
-
     def nextK(k: Double) = math.pow(k /(1 + math.sqrt(1 - k*k)), 2)
 
     def kSeq(m: Int, ks: List[Double]): List[Double] = {
@@ -28,8 +27,15 @@ object EllipticFunction {
       else
         kSeq(m - 1,  nextK(ks.head)::ks)
     }
-
     am * kSeq(11, List(k)).reverse.tail.map(_ + 1).product
-
   }
+
+  def nextAm(k: Double, am: Double) = {
+    val a = math.sqrt(1 - k*k)*math.tan(am)
+    println(a)
+    val b =  math.atan(a)
+    val c = b + am
+     c * 180 / math.Pi
+  }
+
 }
