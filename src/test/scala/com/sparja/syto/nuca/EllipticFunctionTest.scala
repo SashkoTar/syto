@@ -1,114 +1,69 @@
 package com.sparja.syto.nuca
 
 
-import com.sparja.syto.nuca.EllipticFunction.{ellipInc, ellipk, nextAm}
+import com.sparja.syto.nuca.EllipticFunction.ellipInc
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
-import scala.math.{Pi, asin, sin, tan, cos}
+import scala.math.Pi
 
 class EllipticFunctionTest {
 
-  def ellipkDegree(angle: Double) = ellipk(sin(angle * Pi / 180))
 
-  def ellipkIncDegree(angle: Double, am: Double) = ellipInc(sin(angle * math.Pi / 180), am * math.Pi / 180)
+  def ellipkIncDegree(angle: Double, am: Double) = ellipInc(angle * Pi / 180, am * Pi / 180)
 
-  @Test
-  def shouldCalculateCompleteFirstKind = {
-    def f = ellipk(0.5) //sin 30
-    assertEquals(f, 1.68575, 0.001)
-  }
-
-  @Test
-  def shouldCalculateCompleteFirstKind45 = {
-    def f = ellipkDegree(45)
-
-    assertEquals(f, 1.8541, 0.001)
-  }
-
-  @Test
-  def shouldCalculateCompleteFirstKind60 = {
-    def f = ellipkDegree(60)
-
-    assertEquals(f, 2.1565, 0.001)
-  }
-
-  @Test
-  def shouldCalculateIncompleteCompleteFirstKind90 = {
-    def f = ellipkIncDegree(60, 90)
-
-    assertEquals(f, 2.1565, 0.001)
-  }
+  //Contains values F(phi, k) for first kind of Elliptic integral
+  val controlSet:List[(Double, Double, Double)] /*phi, modular angle, u*/ = List(
+    (5.0, 60.0, 0.08735),
+    (20.0, 60.0, 0.35447),
+    (1.0, 54.0, 0.01745),
+    (45, 48, 0.83096),
+    (45, 24, 0.79768),
+    (66, 17, 1.16921),
+    (89, 7, 1.55909),
+    (90, 6, 1.57511),
+    (90, 10, 1.58284),
+    (90, 10, 1.58284),
+    (0, 30, 0),
+    (90, 30, 1.68575),
+    (90, 35, 1.73125),
+    (89, 35, 1.70994),
+    (20, 71, 0.35556),
+    (69, 71, 1.56871),
+    (88, 71, 2.44370),
+    (15.0, 65.0, 0.26428)
+  )
 
   @Test
-  def shouldCalculateIncompleteCompleteFirstKind60 = {
-    def f = ellipkIncDegree(60, 40)
-
-    assertEquals(f, 1.1226, 0.001)
+  def shouldValidateWholeControlSet() = {
+    controlSet
+      .map(cs =>(ellipkIncDegree(cs._2, cs._1), cs._3))
+      .foreach(i => assertEquals(i._1, i._2, 0.0001))
   }
+
+
+
+
+
+  /*
+  @Test
+  def shouldCalclulateIntegral() = {
+    val theta = 58 * Pi / 180
+    val phi = 90 * Pi / 180
+    printAngle("init moduli", theta)
+    printAngle("init amplitude", phi)
+   // val result = am3/8 * cos(x3)  * sqrt(cos(x2)*cos(x1)/cos(theta))
+    println(s"Result is ${ellipInc(theta, phi)}")
+  }
+
 
   @Test
-  def shouldCalculateIncompleteCompleteFirstKind45 = {
-    def f = ellipkIncDegree(45, 30)
-
-    assertEquals(f, 0.53562, 0.001)
+  def shouldCompareNextAmpl() = {
+    val theta =  1.5 * Pi / 180
+    val phi = 181 * Pi / 180
+    val nextPhi = nextAmpl(theta, phi)
+    printAngle("next amplitude", nextPhi)
   }
 
-
-  @Test
-  def calculatePhi() = {
-    println(nextAm(1 / math.sqrt(2), math.Pi / 6))
-  }
-
-  def nextTheta(phi: Double) = asin(tan(phi / 2) * tan(phi / 2))
-
-  def printAngle(angle: Double) = {
-    val degrees=angle * 180 / math.Pi
-    val d = degrees.asInstanceOf[Int] // Truncate the decimals
-    val t1 = (degrees - d) * 60
-    val m = t1.asInstanceOf[Int]
-    val s = (t1 - m) * 60
-
-    //println(s"Radians = $angle, DegreesDecimal=$degrees, Degrees=$d $m' $s''")
-    println(s"Degrees=$d $m' ")
-  }
-
-  def nextAmpl(theta: Double, am: Double) = {
-    val a = cos(theta)*tan(am)
-    val b =  math.atan(a)
-    val c = b + am
-    c
-    // c * 180 / math.Pi
-  }
-
-  @Test
-  def shouldPrint() = {
-    val theta = Pi / 4
-    val phi = Pi / 6
-
-    val x = nextTheta(theta)
-    val am1 = nextAmpl(theta, phi)
-    printAngle(x)
-    printAngle(am1)
-    println("-----------------------------------------------------")
-
-    val x2 = nextTheta(x)
-    val am2 = nextAmpl(x, am1)
-    printAngle(x2)
-    printAngle(am2)
-    println("-----------------------------------------------------")
-
-    val x3 = nextTheta(x2)
-    val am3 = nextAmpl(x2, am2)
-    printAngle(x3)
-    printAngle(am3)
-    println("-----------------------------------------------------")
-
-    val x4 = nextTheta(x3)
-    val am4 = nextAmpl(x3, am3)
-    printAngle(x4)
-    printAngle(am4)
-
-  }
-
+ */
 }
