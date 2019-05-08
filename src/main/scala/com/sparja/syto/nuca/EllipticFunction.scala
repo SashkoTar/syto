@@ -38,7 +38,7 @@ object EllipticFunction {
       val currentKAM = kam.head
       val k = nextTheta(currentKAM._1)
       val am = nextAmpl(currentKAM._1, currentKAM._2)
-      if (math.abs(k - currentKAM._1) < 0.00001)
+      if (math.abs(k - currentKAM._1) < 0.0000001)
         kam
       else {
         //printAngle("moduli", k)
@@ -65,7 +65,7 @@ object EllipticFunction {
     val bNext = Math.sqrt(a * b)
     val cNext = (a - b) / 2
 
-    if (cNext < 0.00001)
+    if (cNext < 0.00000001)
       (aNext, bNext, cNext)::coef
     //coef
     else
@@ -83,16 +83,16 @@ object EllipticFunction {
       val acSinPhi = ca * sin(phi)
       val asinus = asin(acSinPhi)
       val phiNext = phi/2 + asinus/2
-      println(s"a = $a, b = $b,  c = $c, phi = $phiNext")
+      //println(s"a = $a, b = $b,  c = $c, phi = $phiNext")
       correctPhi(phiNext, coeff.tail)
     }
   }
 
 
-  def findFinalAmplitude(u: Double, k: Double): Double = {
+  def am(u: Double, k: Double): Double = {
     val coeffs = iterateAB(List((1, Math.sqrt(1 - k*k), k)))
     val finalPhi = coeffs.head._1 * Math.pow(2, coeffs.size-1) * u
-    println(s"Final phi = $finalPhi")
+    //println(s"Final phi = $finalPhi")
     correctPhi(finalPhi, coeffs)
   }
 

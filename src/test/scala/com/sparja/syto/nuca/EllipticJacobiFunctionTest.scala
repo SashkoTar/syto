@@ -1,7 +1,7 @@
 package com.sparja.syto.nuca
 
 import breeze.numerics.{asin, sin}
-import com.sparja.syto.nuca.EllipticFunction.{ellipInc, findFinalAmplitude}
+import com.sparja.syto.nuca.EllipticFunction.{ellipInc, am}
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
@@ -14,14 +14,18 @@ class EllipticJacobiFunctionTest {
 
   @Test
   def shouldCalculateFinalPhi() = {
-    val phi = findFinalAmplitude(0.08735, sin(Pi/3))
+    val phi = am(0.08735, sin(Pi/3))
     println(phi)
     EllipticFunction.printAngle("Phi", phi)
   }
 
 
 
-
+  @Test
+  def shouldCalculateAm02() = {
+    val phi = am(0.2, 0.9143)
+    assertEquals(phi, 0.198792784, 0.00001)
+  }
 
 
 

@@ -1,5 +1,5 @@
 from scipy.signal import ellipap, ellip
-
+from scipy import special, optimize, fftpack
 
 def print_assert_equals(coefficients, type):
     for idx, val in enumerate(coefficients):
@@ -47,6 +47,7 @@ if __name__ == "__main__":
     #generateTestLowPassFilter(2, 10, 5, 40)
     #generateTestHighPassFilter(3, 10, 5, 40)
     #generateTestBandPassFilter(2, 10, 20, 5, 40)
-    generateTestBandStopFilter(3, 10, 20, 5, 40)
+    print(special.ellipj(0.2, 0.9143))
+    #generateTestBandStopFilter(3, 10, 20, 5, 40)
 
 
