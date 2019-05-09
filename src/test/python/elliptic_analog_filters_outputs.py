@@ -47,7 +47,7 @@ if __name__ == "__main__":
     #generateTestLowPassFilter(2, 10, 5, 40)
     #generateTestHighPassFilter(3, 10, 5, 40)
     #generateTestBandPassFilter(2, 10, 20, 5, 40)
-    print(special.ellipj(0.2, 0.9143))
+    print(special.ellipj(2.74707300, 0.93)) #2.747073004024667 1.5707963267948966
     #generateTestBandStopFilter(3, 10, 20, 5, 40)
 
 
