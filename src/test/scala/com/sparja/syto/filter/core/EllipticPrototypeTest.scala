@@ -31,27 +31,26 @@ class EllipticPrototypeTest {
 
   def cd(u: Double, k: Double) = cn(u, k) / dn(u, k)
 
-  def K(k: Double) = ellipInc(k, PI / 2)
+  def K(k: Double) = ellipInc(asin(sqrt(k)), PI / 2)
 
-  def findZero(u: Double, k: Double) = Complex.i / k * cd(u * K(asin(sqrt(k))), k)
+  def findZero(u: Double, k: Double) = Complex.i / (k * cd(u * K(k), k))
 
   @Test //(0.19748603438284257, 0.9803057003933715, 0.9820089760833982, 0.19879278412406867)
   def printEF() = {
-    val k = 0.76676
-    val t = asin(sqrt(k))
+    val k = 0.93
     val u = 0.2
-    println(K(t))
-    println(sn(u, t))
-    println(cn(u, t))
-    println(dn(u, t))
-    println(am(u, t))
-    println(cd(u, t))
+    println(K(k))
+   // println(sn(u, k))
+   // println(cn(u, k))
+   // println(dn(u, k))
+   // println(am(u, k))
+    println(cd(u * K(k), k))
   }
 
 
   @Test
   def shouldFindZeros() = {
-    val k = 0.9143
+    val k = 0.76676
     val u = List(0.2, 0.6)
     //val zeta_i = u.map(cd(_, k))
 

@@ -10,7 +10,6 @@ object EllipticFunction {
   def nextAmpl(theta: Double, am: Double) = {
     val a = cos(theta) * tan(am)
     val b = math.atan(a)
-
     //As tan is periodic function we have to adjust phi1 to correct b + Pi*n
     def adjustPhi1(phi: Double, phi1: Double): Double = {
       if (phi1 > phi - math.Pi / 2)
@@ -18,7 +17,6 @@ object EllipticFunction {
       else
         adjustPhi1(phi, phi1 + math.Pi)
     }
-
     am + adjustPhi1(am, b)
   }
 
@@ -44,11 +42,9 @@ object EllipticFunction {
         //printAngle("moduli", k)
         //printAngle("amplitude", am)
         //println("----------------------------------")
-
         calculateKam((k, am) :: kam)
       }
     }
-
     val kam = calculateKam(List((k, am))).dropRight(1)
     //println(kam)
     //println(s"${kam.head._2} * ${cos(kam.head._1)} * Math.sqrt(${kam.tail.map(a => cos(a._1)).product}/${cos(k)})/${Math.pow(2, kam.size)}")
