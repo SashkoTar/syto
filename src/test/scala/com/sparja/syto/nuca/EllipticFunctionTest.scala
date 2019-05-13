@@ -41,29 +41,4 @@ class EllipticFunctionTest {
       .foreach(i => assertEquals(i._1, i._2, 0.0001))
   }
 
-
-
-
-
-  /*
-  @Test
-  def shouldCalclulateIntegral() = {
-    val theta = 58 * Pi / 180
-    val phi = 90 * Pi / 180
-    printAngle("init moduli", theta)
-    printAngle("init amplitude", phi)
-   // val result = am3/8 * cos(x3)  * sqrt(cos(x2)*cos(x1)/cos(theta))
-    println(s"Result is ${ellipInc(theta, phi)}")
-  }
-
-
-  @Test
-  def shouldCompareNextAmpl() = {
-    val theta =  1.5 * Pi / 180
-    val phi = 181 * Pi / 180
-    val nextPhi = nextAmpl(theta, phi)
-    printAngle("next amplitude", nextPhi)
-  }
-
- */
 }

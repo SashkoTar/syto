@@ -1,13 +1,15 @@
 package com.sparja.syto.nuca
 
 
-import scala.math.{asin, cos, tan, sin}
+import com.sparja.syto.common.Math._
+
+import scala.math.{asin, cos, sin, tan}
 
 object EllipticFunction {
 
-  def nextTheta(phi: Double) = asin(tan(phi / 2) * tan(phi / 2))
+  private def nextTheta(phi: Double) = asin(tan(phi / 2) * tan(phi / 2))
 
-  def nextAmpl(theta: Double, am: Double) = {
+  private def nextAmpl(theta: Double, am: Double) = {
     val a = cos(theta) * tan(am)
     val b = math.atan(a)
     //As tan is periodic function we have to adjust phi1 to correct b + Pi*n
@@ -20,7 +22,7 @@ object EllipticFunction {
     am + adjustPhi1(am, b)
   }
 
-  def printAngle(name: String, angle: Double) = {
+  private def printAngle(name: String, angle: Double) = {
     val degrees = angle * 180 / math.Pi
     val d = degrees.asInstanceOf[Int] // Truncate the decimals
     val t1 = (degrees - d) * 60
@@ -53,7 +55,7 @@ object EllipticFunction {
 
 
 
-  def iterateAB(coef: List[(Double, Double, Double)]): List[(Double, Double, Double)] = {
+  private def iterateAB(coef: List[(Double, Double, Double)]): List[(Double, Double, Double)] = {
     val a = coef.head._1
     val b = coef.head._2
 
@@ -68,7 +70,7 @@ object EllipticFunction {
       iterateAB((aNext, bNext, cNext)::coef)
   }
 
-  def correctPhi(phi: Double, coeff: List[(Double, Double, Double)]): Double = {
+ private def correctPhi(phi: Double, coeff: List[(Double, Double, Double)]): Double = {
     if (coeff.size == 1)
       phi
     else {
@@ -91,5 +93,17 @@ object EllipticFunction {
     //println(s"Final phi = $finalPhi")
     correctPhi(finalPhi, coeffs)
   }
+
+  def sn(u: Double, k: Double) = sin(am(u, k))
+
+  def cn(u: Double, k: Double) = cos(am(u, k))
+
+  def dn(u: Double, k: Double) = sqrt(1 - k * k * sn(u, k) * sn(u, k))
+
+  def cd(u: Double, k: Double) = cn(u, k) / dn(u, k)
+
+  def K(k: Double) = F(PI/2, k)
+
+  def F(z: Double, k: Double) = ellipInc(asin(sqrt(k)), z)
 
 }

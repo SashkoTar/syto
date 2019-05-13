@@ -12,14 +12,6 @@ class EllipticJacobiFunctionTest {
 
 
 
-  @Test
-  def shouldCalculateFinalPhi() = {
-    val phi = am(0.08735, sin(Pi/3))
-    println(phi)
-    EllipticFunction.printAngle("Phi", phi)
-  }
-
-
 
   @Test
   def shouldCalculateAm02() = {

@@ -14,5 +14,7 @@ object Math {
 
   def sqrt(x: Double) = scala.math.sqrt(x)
 
+  def pow(x: Double, y: Double) = scala.math.pow(x, y)
+
   val PI = scala.math.Pi
 }

@@ -1,16 +1,13 @@
 package com.sparja.syto.filter.core
 
 import breeze.math.Complex
-import breeze.numerics.{cos, sin, sqrt}
 import com.sparja.syto.polynomial.BesselPolynomial
 import com.sparja.syto.polynomial.root.WeierstrassRootFinder
+import com.sparja.syto.nuca.EllipticFunction.{K, am, cd, ellipInc, sn}
+import com.sparja.syto.common.Math.{PI, asin, cos, sin, sqrt, pow}
 import org.apache.commons.math3.util.FastMath
 
 object Prototype {
-
-  def elliptic(order: Int, rs: Double, rp: Double) = {
-    Roots(List.empty[Complex], List.empty[Complex], 1.0)
-  }
 
   //TODO extract to specific module
   private[core] def normFactor(p: List[Complex], k: Double): Double = {
@@ -131,6 +128,29 @@ object Prototype {
     val scale = Math.pow(-1, order) * (if (order % 2 == 0) poles.product / sqrt(1 + eps * eps) else poles.product)
 
     Roots(zeros, poles, scale.real)
+  }
+
+
+
+  def elliptic(order: Int, rp: Double, rs: Double) = {
+    def findZero(u: Double, k: Double) = Complex.i / (k * cd(u * K(k*k), k))
+
+    val ep = sqrt(Math.pow(10, 0.1 * rp) - 1.0)
+    val es = sqrt(Math.pow(10, 0.1 * rs) - 1.0)
+    val k1 = ep/es
+    val k1p = sqrt(1 - k1 * k1)
+
+    val u = (1 to order/2).map(ui => (2.0*ui - 1)/order)
+
+    val ellipk = K(k1p * k1p)
+
+    val kp = u.map(x => pow(sn(x * ellipk , k1p), 4)).product  * pow(k1p, order)
+
+    val k = 0.76676//sqrt(1 - kp * kp)
+
+    val zeros = u.map(findZero(_, k)).toList
+
+    Roots(zeros:::(zeros.map(_.conjugate)), List.empty[Complex], 1.0)
   }
 
 }
