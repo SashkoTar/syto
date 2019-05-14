@@ -3,39 +3,52 @@ package com.sparja.syto.filter.core
 import breeze.math.Complex
 import com.sparja.syto.common.Math.{PI, asin, sin, sqrt}
 import com.sparja.syto.nuca.EllipticFunction.{K, am, cd}
+import com.sparja.syto.util.ComplexAssertion
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
 class EllipticPrototypeTest {
 
-  def calculateRoots(order: Int) = Prototype.elliptic(order, 5, 40)
+  def calculateRoots(order: Int) = Prototype.elliptic(order, 1, 45)
 
- // @Test
-  def shouldCalculateTwoOrderPrototype() = {
-    val roots = calculateRoots(2)
-    assertEquals(roots.scale, 0.0100001249734, 0.001)
-    assertEquals(roots.zeros(0).imag, 5.8737717, 0.001)
-    assertEquals(roots.zeros(1).imag, -5.873771, 0.001)
+ @Test
+  def shouldCalculateFourOrderPrototype() = {
+   /*
+   val (z, p, k) = calculateRoots(4)
+   assertEquals(k, 0.00562418320487, 0.001)
+   assertEquals(z(0), 4.05301771243j, 0.001)
+   assertEquals(z(1), 1.80715694465j, 0.001)
+   assertEquals(z(2), -4.05301771243j, 0.001)
+   assertEquals(z(3), -1.80715694465j, 0.001)
+   assertEquals(p(0), (-0.357890522369-0.460224795676j), 0.001)
+   assertEquals(p(1), (-0.113251415013-0.991559809987j), 0.001)
+   assertEquals(p(2), (-0.357890522369+0.460224795676j), 0.001)
+   assertEquals(p(3), (-0.113251415013+0.991559809987j), 0.001) */
+   val roots = calculateRoots(4) //TODO check the accuracy
+   val expectedZeros = List(Complex(0, 4.05301771243), Complex(0, 1.80715694465), Complex(0, -4.05301771243), Complex(0, -1.80715694465))
+   ComplexAssertion.assertContainAll(roots.zeros, expectedZeros)
 
-   // assertEquals(roots.poles(0).real, -0.2266968371, 0.001)
-   // assertEquals(roots.poles(0).imag, -0.749762526686, 0.001)
-   // assertEquals(roots.poles(1).real, -0.2266968371, 0.001)
-   // assertEquals(roots.poles(1).imag, 0.749762526686, 0.001)
   }
 
   @Test
   def shouldCalculateFiveOrderPrototype() = {
-    val roots = Prototype.elliptic(5, 45, 1)
-    //assertEquals(roots.scale, 0.0469792050102, 0.001)
-    assertEquals(roots.zeros(0).imag, 1.76424293006, 0.001)
-    assertEquals(roots.zeros(1).imag, 1.25378488384, 0.001)
-    assertEquals(roots.zeros(2).imag, -1.76424293006, 0.001)
-    assertEquals(roots.zeros(3).imag, -1.25378488384, 0.001)
-    //assertEquals(p(0), (-0.385357191616+0j), 0.001)
-   // assertEquals(p(1), (-0.21910842552-0.741043063478j), 0.001)
-   // assertEquals(p(2), (-0.0499194322177-0.998199135452j), 0.001)
-   // assertEquals(p(3), (-0.21910842552+0.741043063478j), 0.001)
-   // assertEquals(p(4), (-0.0499194322177+0.998199135452j), 0.001)
+    /*
+    val (z, p, k) = calculateRoots(5)
+    assertEquals(k, 0.0297358859419, 0.001)
+    assertEquals(z(0), 1.94559171398j, 0.001)
+    assertEquals(z(1), 1.34685649439j, 0.001)
+    assertEquals(z(2), -1.94559171398j, 0.001)
+    assertEquals(z(3), -1.34685649439j, 0.001)
+    assertEquals(p(0), (-0.36411313623+0j), 0.001)
+    assertEquals(p(1), (-0.223925617635-0.715617958499j), 0.001)
+    assertEquals(p(2), (-0.0567369924904-0.997075184324j), 0.001)
+    assertEquals(p(3), (-0.223925617635+0.715617958499j), 0.001)
+    assertEquals(p(4), (-0.0567369924904+0.997075184324j), 0.001)
+     */
+    val roots = calculateRoots(5)
+    val expectedZeros = List(Complex(0, 1.94559171398), Complex(0, 1.34685649439), Complex(0, -1.94559171398), Complex(0, -1.34685649439))
+    ComplexAssertion.assertContainAll(roots.zeros, expectedZeros)
+
   }
 
 

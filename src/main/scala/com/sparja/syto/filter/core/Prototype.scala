@@ -146,7 +146,7 @@ object Prototype {
 
     val kp = u.map(x => pow(sn(x * ellipk , k1p), 4)).product  * pow(k1p, order)
 
-    val k = 0.76676//sqrt(1 - kp * kp)
+    val k = sqrt(1 - kp * kp)
 
     val zeros = u.map(findZero(_, k)).toList
 
