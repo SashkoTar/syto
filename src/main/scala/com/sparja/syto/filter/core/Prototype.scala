@@ -3,7 +3,8 @@ package com.sparja.syto.filter.core
 import breeze.math.Complex
 import com.sparja.syto.polynomial.BesselPolynomial
 import com.sparja.syto.polynomial.root.WeierstrassRootFinder
-import com.sparja.syto.nuca.EllipticFunction.{K, am, cd, ellipInc, sn}
+import com.sparja.syto.nuca.EllipticFunction.{K, ellipInc}
+import com.sparja.syto.nuca.JacobiEllipticFunction.{am, cd, sn, snComp, asn, cdComp}
 import com.sparja.syto.common.Math.{PI, asin, cos, sin, sqrt, pow}
 import org.apache.commons.math3.util.FastMath
 
@@ -133,7 +134,7 @@ object Prototype {
 
 
   def elliptic(order: Int, rp: Double, rs: Double) = {
-    def findZero(u: Double, k: Double) = Complex.i / (k * cd(u * K(k*k), k))
+    def findZero(u: Double, k: Double) = Complex.i / (k * cd(u * K(k), k))
 
     val ep = sqrt(Math.pow(10, 0.1 * rp) - 1.0)
     val es = sqrt(Math.pow(10, 0.1 * rs) - 1.0)
@@ -142,7 +143,7 @@ object Prototype {
 
     val u = (1 to order/2).map(ui => (2.0*ui - 1)/order)
 
-    val ellipk = K(k1p * k1p)
+    val ellipk = K(k1p)
 
     val kp = u.map(x => pow(sn(x * ellipk , k1p), 4)).product  * pow(k1p, order)
 
@@ -150,7 +151,18 @@ object Prototype {
 
     val zeros = u.map(findZero(_, k)).toList
 
-    Roots(zeros:::(zeros.map(_.conjugate)), List.empty[Complex], 1.0)
+    val v0 = -Complex.i/(order  * K(k1)) * asn(Complex.i/ep, k1) // 0.18181
+
+    def findPole(u: Double, k: Double) = Complex.i * cdComp((u - v0 * Complex.i)  * K(k), k)
+
+    val halfOfPoles = u.map(findPole(_, k)).toList
+
+    val p0 = Complex.i * snComp((v0 * Complex.i)  * K(k), k)
+
+    //TODO add implicit method addConjugate
+    val poles = if (order % 2 == 1) p0::(halfOfPoles ::: halfOfPoles.map(_.conjugate)) else halfOfPoles ::: halfOfPoles.map(_.conjugate)
+
+    Roots(zeros:::(zeros.map(_.conjugate)), poles, 1.0)
   }
 
 }

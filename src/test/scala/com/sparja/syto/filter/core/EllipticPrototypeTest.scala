@@ -2,7 +2,8 @@ package com.sparja.syto.filter.core
 
 import breeze.math.Complex
 import com.sparja.syto.common.Math.{PI, asin, sin, sqrt}
-import com.sparja.syto.nuca.EllipticFunction.{K, am, cd}
+import com.sparja.syto.nuca.EllipticFunction.K
+import com.sparja.syto.nuca.JacobiEllipticFunction.{am, cd}
 import com.sparja.syto.util.ComplexAssertion
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
@@ -49,6 +50,8 @@ class EllipticPrototypeTest {
     val expectedZeros = List(Complex(0, 1.94559171398), Complex(0, 1.34685649439), Complex(0, -1.94559171398), Complex(0, -1.34685649439))
     ComplexAssertion.assertContainAll(roots.zeros, expectedZeros)
 
+    val expectedPoles = List(Complex(-0.364113, 0), Complex(-0.22392, -0.715617), Complex(-0.05673, -0.99707), Complex(-0.22392, 0.715617), Complex(-0.05673, 0.99707))
+    ComplexAssertion.assertContainAll(roots.poles, expectedPoles)
   }
 
 
@@ -57,7 +60,7 @@ class EllipticPrototypeTest {
 
   @Test //(0.19748603438284257, 0.9803057003933715, 0.9820089760833982, 0.19879278412406867)
   def printEF() = {
-    val k = 0.93
+    val k = sqrt(0.93)
     val u = 0.2
     println(K(k))
    // println(sn(u, k))
@@ -69,10 +72,10 @@ class EllipticPrototypeTest {
 
   @Test
   def compareOutputs() = {
-    val k = 0.93
+    val k = sqrt(0.93)
     println(K(k))
     println(PI/2)
-    println(am(2.7470730, sqrt(k)))
+    println(am(2.7470730, k))
   }
 
   @Test
