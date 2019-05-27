@@ -96,9 +96,37 @@ object JacobiEllipticFunction {
   def cdComp(z: Complex, k: Double) = cnComp(z, k) / dnComp(z, k)
 
 
-  def asn(z: Complex, k: Double) = {
+  def asn_bu(z: Complex, k: Double) = {
     println("Z: " + z)
     Complex(0, 1.4279)
+  }
+
+
+  def asn(z: Complex, k: Double):Complex = {
+    def landen_(k: List[Double], err: Double):List[Double] = {
+      if (k.head > err)
+        landen_(pow(k.head/(1 + sqrt(1 - k.head*k.head)), 2)::k, err)
+      else
+        k.reverse
+    }
+
+    //TODO switch to case
+    def nextU(currentU: Complex, currentK: Double, ks: List[Double]): Complex = {
+      if(ks.isEmpty)
+        currentU
+      else {
+        val sqrt1z = (1 - currentK*currentK*currentU*currentU).pow(0.5)
+        val u = 2 * currentU / ((1 + ks.head) * (1 + sqrt1z))
+        nextU(u, ks.head, ks.tail)
+      }
+    }
+
+    val kList = landen_(List(k), 0.000000000001)
+
+    val um = nextU(z, kList.head, kList.tail)
+    val u = 2/Math.PI * asin(um)  // Inverse SN
+   // println(s"\n u(M) = $um, u = $u")
+    u
   }
 
 }

@@ -20,10 +20,27 @@ object Math {
 
   val PI = scala.math.Pi
 
-  def acos(z: Complex): Complex = {
-    val sqrt1z:Complex = (1 - z.pow(2)).pow(0.5)
 
-    -Complex.i*(z + Complex.i*(sqrt1z)).log
-
+  private def log(z: Complex) = {
+    z.log
   }
+
+  private def sqrt(z: Complex) = {
+    z.pow(0.5)
+  }
+
+
+  def acos(z: Complex): Complex = {
+    val zz = new org.apache.commons.math3.complex.Complex(z.real, z.imag)
+    val result = zz.acos()
+    Complex(result.getReal, result.getImaginary)
+  }
+
+
+  def asin(z: Complex): Complex = {
+    val zz = new org.apache.commons.math3.complex.Complex(z.real, z.imag)
+    val result = zz.asin()
+    Complex(result.getReal, result.getImaginary)
+  }
+
 }

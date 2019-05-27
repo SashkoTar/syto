@@ -13,39 +13,41 @@ class EllipticPrototypeTest {
   def calculateRoots(order: Int) = Prototype.elliptic(order, 1, 45)
 
  @Test
-  def shouldCalculateFourOrderPrototype() = {
+  def shouldCalculateThreeOrderPrototype() = {
    /*
-   val (z, p, k) = calculateRoots(4)
-   assertEquals(k, 0.00562418320487, 0.001)
-   assertEquals(z(0), 4.05301771243j, 0.001)
-   assertEquals(z(1), 1.80715694465j, 0.001)
-   assertEquals(z(2), -4.05301771243j, 0.001)
-   assertEquals(z(3), -1.80715694465j, 0.001)
-   assertEquals(p(0), (-0.357890522369-0.460224795676j), 0.001)
-   assertEquals(p(1), (-0.113251415013-0.991559809987j), 0.001)
-   assertEquals(p(2), (-0.357890522369+0.460224795676j), 0.001)
-   assertEquals(p(3), (-0.113251415013+0.991559809987j), 0.001) */
+   val (z, p, k) = calculateRoots(3)
+   assertEquals(k, 0.0471420077504, 0.001)
+   assertEquals(z(0), 3.30569332109j, 0.001)
+   assertEquals(z(1), -3.30569332109j, 0.001)
+   assertEquals(p(0), (-0.514143577259+0j), 0.001)
+   assertEquals(p(1), (-0.233500784754-0.973362052005j), 0.001)
+   assertEquals(p(2), (-0.233500784754+0.973362052005j), 0.001)
+    */
+   val roots = calculateRoots(3) //TODO check the accuracy
+   println(roots)
+   /*
+   val expectedZeros = List(Complex(0, 4.05301771243), Complex(0, 1.80715694465), Complex(0, -4.05301771243), Complex(0, -1.80715694465))
+   ComplexAssertion.assertContainAll(roots.zeros, expectedZeros)
+
+   val expectedPoles = List(Complex(-0.35789, -0.4602247), Complex(-0.113251, -0.9915598), Complex(-0.35789, 0.4602247), Complex(-0.113251, 0.9915598))
+   ComplexAssertion.assertContainAll(roots.poles, expectedPoles)
+  */
+ }
+
+
+  @Test
+  def shouldCalculateFourOrderPrototype() = {
    val roots = calculateRoots(4) //TODO check the accuracy
    val expectedZeros = List(Complex(0, 4.05301771243), Complex(0, 1.80715694465), Complex(0, -4.05301771243), Complex(0, -1.80715694465))
    ComplexAssertion.assertContainAll(roots.zeros, expectedZeros)
 
-  }
+   val expectedPoles = List(Complex(-0.35789, -0.4602247), Complex(-0.113251, -0.9915598), Complex(-0.35789, 0.4602247), Complex(-0.113251, 0.9915598))
+   ComplexAssertion.assertContainAll(roots.poles, expectedPoles)
+
+ }
 
   @Test
   def shouldCalculateFiveOrderPrototype() = {
-    /*
-    val (z, p, k) = calculateRoots(5)
-    assertEquals(k, 0.0297358859419, 0.001)
-    assertEquals(z(0), 1.94559171398j, 0.001)
-    assertEquals(z(1), 1.34685649439j, 0.001)
-    assertEquals(z(2), -1.94559171398j, 0.001)
-    assertEquals(z(3), -1.34685649439j, 0.001)
-    assertEquals(p(0), (-0.36411313623+0j), 0.001)
-    assertEquals(p(1), (-0.223925617635-0.715617958499j), 0.001)
-    assertEquals(p(2), (-0.0567369924904-0.997075184324j), 0.001)
-    assertEquals(p(3), (-0.223925617635+0.715617958499j), 0.001)
-    assertEquals(p(4), (-0.0567369924904+0.997075184324j), 0.001)
-     */
     val roots = calculateRoots(5)
     val expectedZeros = List(Complex(0, 1.94559171398), Complex(0, 1.34685649439), Complex(0, -1.94559171398), Complex(0, -1.34685649439))
     ComplexAssertion.assertContainAll(roots.zeros, expectedZeros)
@@ -55,40 +57,6 @@ class EllipticPrototypeTest {
   }
 
 
-
-  def findZero(u: Double, k: Double) = Complex.i / (k * cd(u * K(k*k), k))
-
-  @Test //(0.19748603438284257, 0.9803057003933715, 0.9820089760833982, 0.19879278412406867)
-  def printEF() = {
-    val k = sqrt(0.93)
-    val u = 0.2
-    println(K(k))
-   // println(sn(u, k))
-   // println(cn(u, k))
-   // println(dn(u, k))
-    println(am(u, sqrt(k)))
-   // println(cd(u * K(k), k))
-  }
-
-  @Test
-  def compareOutputs() = {
-    val k = sqrt(0.93)
-    println(K(k))
-    println(PI/2)
-    println(am(2.7470730, k))
-  }
-
-  @Test
-  def shouldFindZeros() = {
-    val k = 0.76676
-    val u = List(0.2, 0.6)
-    //val zeta_i = u.map(cd(_, k))
-
-    val zeros = u.map(findZero(_, k))
-
-    println(zeros)
-
-  }
 
 /*
 

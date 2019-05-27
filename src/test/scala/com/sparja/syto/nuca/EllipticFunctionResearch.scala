@@ -1,9 +1,9 @@
 package com.sparja.syto.nuca
 
 import breeze.math.Complex
-import com.sparja.syto.common.Math.{acos, pow, sqrt}
+import com.sparja.syto.common.Math.{acos, asin, pow, sqrt}
 import com.sparja.syto.nuca.EllipticFunction.{F, K}
-import com.sparja.syto.nuca.JacobiEllipticFunction.{am, sn}
+import com.sparja.syto.nuca.JacobiEllipticFunction.{am, asn, sn}
 import org.junit.Test
 
 
@@ -40,59 +40,100 @@ class EllipticFunctionResearch {
   end
 */
 
-  @Test
-  def testAcde() = {
-    val k = 0.76676
-    val u = acde(Complex(-2.03459, 0.83896), k)
 
-    println(s"U = $u")
 
-  }
 
-  @Test
-  def testAcde2() = {
-    val k = 0.93
-    val u = acde(Complex(0.7618000, 0), k)
-
-    println(s"U = $u")
-
-  }
-
-  def acde(wc: Complex, k: Double) = {
-    val v = landen(List(k), 0.0000000001).reverse
-    //println(v)
-    var w = wc //
-    var v1 = k
-    (0 until  v.size).foreach(n => {
-      v1 = if (n == 0 ) k else v(n-1)
-      println(s"W = $w")
-      w = w/(1 + (1 - w*w*v1*v1).pow(0.5)) * 2/(1+v(n))
-    })
-    println(s"W = $w")
-    val u = 2/Math.PI * acos(w)
-    u
-  }
-
-  def landen(k: List[Double], err: Double):List[Double] = {
-    //k = (k/(1+sqrt(1-k^2)))^2;
-    println(s"k = ${k.head}")
-    if (k.head > err)
-      landen(pow(k.head/(1 + sqrt(1 - k.head*k.head)), 2)::k, err)
-    else
-      k.dropRight(1)
-  }
-  @Test
-  def newLanden() = {
-
-    landen(List(0.93), 0.000001)
-
-    println("K ->" + landen(List(0.93), 0.000001))
-  }
 
   @Test
   def acos1() = {
     val z = Complex(0.34760254636020216, 0.274579463199337)
     println(acos(z))
   }
+
+
+
+
+
+  @Test
+  def shouldRunAsInWebPageComplex() = {
+
+    def landen_(k: List[Double], err: Double):List[Double] = {
+      if (k.head > err)
+        landen_(pow(k.head/(1 + sqrt(1 - k.head*k.head)), 2)::k, err)
+      else
+        k.reverse
+    }
+
+    //TODO switch to case
+    def nextU(currentU: Complex, currentK: Double, ks: List[Double]): Complex = {
+     // println(s"k=$currentK\tu=$currentU")
+      if(ks.isEmpty)
+        currentU
+      else {
+        val sqrt1z = (1 - currentK*currentK*currentU*currentU).pow(0.5)
+        val u = 2 * currentU / ((1 + ks.head) * (1 + sqrt1z))
+        nextU(u, ks.head, ks.tail)
+      }
+    }
+
+    val k = 0.93
+    val z = Complex(0.7618, 0)
+    val kList = landen_(List(k), 0.000000000001)
+
+    val um = nextU(z, kList.head, kList.tail)
+    val u = 2/Math.PI * acos(um)  // Inverse CD
+    println(s"\n u(M) = $um, u = $u")
+  }
+
+
+  def asn(z: Complex, k: Double):Complex = {
+    def landen_(k: List[Double], err: Double):List[Double] = {
+      if (k.head > err)
+        landen_(pow(k.head/(1 + sqrt(1 - k.head*k.head)), 2)::k, err)
+      else
+        k.reverse
+    }
+
+    //TODO switch to case
+    def nextU(currentU: Complex, currentK: Double, ks: List[Double]): Complex = {
+      if(ks.isEmpty)
+        currentU
+      else {
+        val sqrt1z = (1 - currentK*currentK*currentU*currentU).pow(0.5)
+        val u = 2 * currentU / ((1 + ks.head) * (1 + sqrt1z))
+        nextU(u, ks.head, ks.tail)
+      }
+    }
+
+    val kList = landen_(List(k), 0.000000000001)
+
+    val um = nextU(z, kList.head, kList.tail)
+    val u = 2/Math.PI * asin(um)  // Inverse SN
+    println(s"\n u(M) = $um, u = $u")
+    u
+  }
+
+  @Test
+  def shouldRunInverseSNComplex() = {
+    val k = 0.93
+    val z = Complex(0.91792, 0)
+    println(asn(z, k))
+  }
+
+  @Test
+  def shouldFindV0() = {
+    val k1 = 0.0028615
+    val order = 5
+    val Kval = K(k1)
+    val z = Complex.i/0.50885
+
+    val asnVal = asn(z, k1)
+
+    val v0 = -Complex.i/(order) * asnVal // 0.18181
+  //  val v0 = -Complex.i/5 * asn(z, k)
+
+      println(v0)
+  }
+
 
 }

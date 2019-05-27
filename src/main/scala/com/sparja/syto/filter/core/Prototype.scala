@@ -151,7 +151,8 @@ object Prototype {
 
     val zeros = u.map(findZero(_, k)).toList
 
-    val v0 = -Complex.i/(order  * K(k1)) * asn(Complex.i/ep, k1) // 0.18181
+   // val v0 = -Complex.i/(order  * K(k1)) * asn(Complex.i/ep, k1) // 0.18181
+    val v0 = -Complex.i/(order) * asn(Complex.i/ep, k1) // 0.18181
 
     def findPole(u: Double, k: Double) = Complex.i * cdComp((u - v0 * Complex.i)  * K(k), k)
 
