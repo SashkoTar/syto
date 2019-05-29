@@ -1,7 +1,7 @@
 package com.sparja.syto.nuca
 
 import breeze.math.Complex
-import com.sparja.syto.common.Math.{acos, asin, pow, sqrt}
+import com.sparja.syto.common.Math._
 import com.sparja.syto.nuca.EllipticFunction.{F, K}
 import com.sparja.syto.nuca.JacobiEllipticFunction.{am, asn, sn}
 import org.junit.Test
@@ -134,6 +134,89 @@ class EllipticFunctionResearch {
 
       println(v0)
   }
+
+
+
+  /*
+
+  a[0] = 1.0;
+  b = sqrt(1.0 - m);
+  c[0] = sqrt(m);
+  twon = 1.0;
+  i = 0;
+
+  while( fabs(c[i]/a[i]) > MACHEP )
+    {
+    if( i > 7 )
+      {
+      mtherr( "ellpj", OVERFLOW );
+      goto done;
+      }
+    ai = a[i];
+    ++i;
+    c[i] = ( ai - b )/2.0;
+    t = sqrt( ai * b );
+    a[i] = ( ai + b )/2.0;
+    b = t;
+    twon *= 2.0;
+    }
+
+  done:
+
+  /* backward recurrence */
+  phi = twon * a[i] * u;
+  do
+    {
+    t = c[i] * sin(phi) / a[i];
+    b = phi;
+    phi = (asin(t) + phi)/2.0;
+    }
+  while( --i );
+
+
+   */
+
+  @Test
+  def testCephesAm() = {
+    val k = 0.93
+    println(cephesAm(2.7470730, k))
+  }
+
+  def cephesAm(u: Double, k: Double) = {
+    var a = new Array[Double](9)
+    var c = new Array[Double](9)
+    a(0) = 1.0
+    var b = sqrt(1 - k)
+    c(0) = sqrt(k)
+    var twon = 1.0
+    var i = 0
+    var ai = 0.0
+    var t: Double = 0
+
+    while (c(i) / a(i) > 0.0000000001) {
+      ai = a(i)
+      i += 1
+      c(i) = (ai - b) / 2.0
+      t = sqrt(ai * b)
+      a(i) = (ai + b) / 2.0
+      b = t
+      twon *= 2.0
+    }
+
+    var phi = twon * a(i) * u
+
+
+    while (i != 0) {
+      t = c(i) * sin(phi) / a(i);
+      b = phi;
+      phi = (asin(t) + phi) / 2.0;
+      i -= 1
+    }
+
+    phi
+
+  }
+
 
 
 }

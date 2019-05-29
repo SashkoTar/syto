@@ -149,7 +149,7 @@ object Prototype {
 
     val k = sqrt(1 - kp * kp)
 
-    val zeros = u.map(findZero(_, k)).toList
+    val zeros = u.map(findZero(_, k)).toList:::u.map(findZero(_, k)).map(_.conjugate).toList
 
    // val v0 = -Complex.i/(order  * K(k1)) * asn(Complex.i/ep, k1) // 0.18181
     val v0 = -Complex.i/(order) * asn(Complex.i/ep, k1) // 0.18181
@@ -163,7 +163,12 @@ object Prototype {
     //TODO add implicit method addConjugate
     val poles = if (order % 2 == 1) p0::(halfOfPoles ::: halfOfPoles.map(_.conjugate)) else halfOfPoles ::: halfOfPoles.map(_.conjugate)
 
-    Roots(zeros:::(zeros.map(_.conjugate)), poles, 1.0)
+    val preScale = poles.map(_.unary_-).product / zeros.map(_.unary_-).product
+
+    val scale = if (order % 2 == 0) preScale / sqrt(1 + ep * ep) else preScale
+
+
+    Roots(zeros, poles, scale.real)
   }
 
 }
