@@ -7,7 +7,7 @@ startdate = '20111118'
 enddate   = '20121125'
 
 
-r = csv.DictReader("C:\Projects\sonia\src\main\resources\LOBO0010-20180922103241.tsv", delimiter='\t')
+r = csv.DictReader("C:\Projects\syto\src\main\resources\LOBO0010-20180922103241.tsv", delimiter='\t')
 #data.seek(0)
 
 # Break the file into two lists
