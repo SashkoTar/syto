@@ -19,7 +19,7 @@ object FilterImplementation {
       val yn_2 = y(n-2)
       val yn_3 = y(n-3)
       output(n) = b(0)*xn + b(1)*xn_1 + b(2)*xn_2 + b(3)*xn_3 - a(1)*yn_1 - a(2)*yn_2 - a(3)*yn_3
-      println(s"output($n)=${output(n)}")
+      //println(s"output($n)=${output(n)}")
     })
 
     output

@@ -9,7 +9,7 @@ object WavePlayer {
 
 
     // open the sound file as a Java input stream
-    val gongFile = "C:\\Projects\\syto\\src\\main\\resources\\nightingale.wav"
+    val gongFile = "C:\\projects\\scala\\syto\\src\\main\\resources\\nightingale.wav"
     val in = new FileInputStream(gongFile)
 
     // create an audiostream from the inputstream

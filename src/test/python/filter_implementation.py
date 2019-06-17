@@ -12,7 +12,7 @@ def filtfilt_(b, a, y):
 
 
 if __name__ == "__main__":
-    end = 20
+    end = 10
     t = np.linspace(1, end, end)
     #x = (np.sin(2*np.pi*0.75*t*(1-t) + 2.1) + 0.1*np.sin(2*np.pi*1.25*t + 1) + 0.18*np.cos(2*np.pi*3.85*t))
     #xn = x + np.random.randn(len(t)) * 0.08
@@ -25,9 +25,9 @@ if __name__ == "__main__":
     print("LFILT:")
     print(res)
 
-    res = filtfilt_(b, a, t)
-    print("FILTFILT")
-    print(res)
+    #res = filtfilt_(b, a, t)
+    #print("FILTFILT")
+    #print(res)
 
 
 

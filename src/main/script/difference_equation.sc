@@ -18,8 +18,8 @@ def rule413(n: Int) = 3*sigma(n) - y(n - 1)/3
 0 to 5 foreach {i => println(s"y($i) = ${y(i)}") }
 */
 
-val filter = DigitalButterworthLowPassFilter(3, 10f, 40f)
-val (b, a) = filter.calculateCoefficients()
+//val filter = DigitalButterworthLowPassFilter(3, 10f, 40f)
+//val (b, a) = filter.calculateCoefficients()
 
 val xseq = (0 to 31).map(ang => {Math.sin(ang * 2 * Math.PI/6.0) + Math.sin(ang * 2 * Math.PI/32.0)}).toList
 
@@ -33,7 +33,8 @@ def x(n:Int) = {
 x(0)
 x(31)
 
-
+val a = List(3,4,4,4,4)
+val b = List(3,4,4,4,4)
 def y(n: Int): Double = {
   if (n < 0)
     0
