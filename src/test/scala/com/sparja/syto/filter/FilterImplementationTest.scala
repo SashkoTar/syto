@@ -34,8 +34,8 @@ LFILT:
     ))*/
     val a = List(1, -1.16191748, 0.69594276, -0.1377613)
     val b = List(0.049533, 0.14859899, 0.14859899, 0.049533)
-    val x = (1 to 10).toList
-    val y = filter(a, b, x)
+    val x = (1 to 10).map(_.toDouble).toList
+    val y = filter(b, a, x)
 
     assertEquals(y(0), 0.049533, 0.00001)
     assertEquals(y(1), 0.30521824, 0.00001)
@@ -49,7 +49,7 @@ LFILT:
   def shouldFilterData() = {
    println(filter(List(1, -1.16191748,  0.69594276, -0.1377613),
      List(0.049533, 0.14859899, 0.14859899, 0.049533),
-     (1 to 30).toList
+     (1 to 30).map(_.toDouble).toList
    ))
 
   }
@@ -59,7 +59,7 @@ LFILT:
   def shouldFilterDataFor1() = {
     println(filter(List(1, -1.16191748,  0.69594276, -0.1377613),
       List(0.049533, 0.14859899, 0.14859899, 0.049533),
-      (1 to 30).toList
+      (1 to 30).map(_.toDouble).toList
     ))
   }
 
