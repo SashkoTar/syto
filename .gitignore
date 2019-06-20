@@ -1,4 +1,8 @@
 /target
 /distribution
 /.idea
+/hpeq
+/venv
+hpeq.zip
+lines.png
 *.iml
