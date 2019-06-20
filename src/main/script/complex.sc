@@ -32,5 +32,6 @@ val poles = (positivePa:::negativePa).map(p => {
   num / denum
 }).toList
 
+val i = Complex.i
 
-
+val b = 3+i*3
