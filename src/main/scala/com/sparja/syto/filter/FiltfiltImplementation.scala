@@ -11,41 +11,6 @@ import breeze.linalg.DenseMatrix.{ eye, horzcat, vertcat, zeros }
 object FiltfiltImplementation {
 
 
-  /** Computes the stable state of the filter.
-    *
-    *  The method used here is described in the following paper:
-    *
-    *  Gustafsson, F. (1996) Determining the Initial States in Forward-Backward
-    *   Filtering.  IEEE Transactions on Signal Processing.  44(4):988-992.
-    *
-    *  @param bNorm numerator coefficients divided by a(0) denominator
-    *  	coefficient
-    *  @param aNorm denominator coefficients divided by a(0) denominator
-    *  	coefficient
-    *  @return initial filter states
-    *  @author Jonathan Merritt <merritt@unimelb.edu.au>
-    */
-
-  private[filter] def computeZi(bNorm: IndexedSeq[Double], aNorm: IndexedSeq[Double]): List[Double] = {
-    require(aNorm.size == bNorm.size)
-    val fo = aNorm.size - 1   // filter order
-
-    val b0 = bNorm.head
-    val aTail = DenseMatrix.create(fo, 1, aNorm.tail.toArray)  // aTail as column vector
-    val bTail = DenseMatrix.create(fo, 1, bNorm.tail.toArray)  // bTail as column vector
-
-    val za =
-      if (fo > 1) {
-        eye[Double](fo) - horzcat(-aTail, vertcat(eye[Double](fo - 1), zeros[Double](1, fo - 1)))
-      } else {
-        eye[Double](1) + aTail
-      }
-    val zb = bTail - aTail * b0
-    val zi = za \ zb
-
-    zi(::, 0).toArray.toList
-  }
-
   /** Forward-reverse, zero phase lag digital filtering.
     *
     *  Applies a digital filter first in the forward direction and then in the
@@ -67,7 +32,7 @@ object FiltfiltImplementation {
     *  @see [[scala.signal.Filter.filter]]
     *  @author Jonathan Merritt <merritt@unimelb.edu.au>
     */
-  def filtfilt(b: Seq[Double], a: Seq[Double], x: Seq[Double]): IndexedSeq[Double] = {
+  def filtfilt_legacy(b: Seq[Double], a: Seq[Double], x: Seq[Double]): IndexedSeq[Double] = {
 
     // compute the filter order, and the approximate length of transients
     val filterOrder = math.max(b.size, a.size) - 1
@@ -86,7 +51,7 @@ object FiltfiltImplementation {
     // compute the stable conditions for the filter's state variable
     //  (si / x(0)).
     //  see Filter.filter() for more information on the state variable.
-    val zi = computeZi(bNorm, aNorm)
+    val zi = calculateZi(bNorm.toList, aNorm.toList)
 
     // now we reverse and reflect the ends of the signal, appending and
     //  pre-pending the reversed and reflected data.  this helps to reduce the
@@ -100,8 +65,8 @@ object FiltfiltImplementation {
 
     // apply the filter in forward and reverse, computing the initial state
     //  vector as appropriate.
-    val fwd = FilterImplementation.filter(b, a, xx, Some(zi.map(_ * xx.head)))
-    val rev = FilterImplementation.filter(b, a, fwd.reverse, Some(zi.map(_ * fwd.last)))
+    val fwd = FilterImplementation.filter(b, a, xx)
+    val rev = FilterImplementation.filter(b, a, fwd.reverse)
 
     // trim out the central region of the signal (minus the padding for
     //   transients)
@@ -113,45 +78,115 @@ object FiltfiltImplementation {
 
   private def companionByPolinomial(a: List[Double]) = {
     val n  = a.size
-
     val v1 = diag(DenseVector.ones[Double](n-2))
-
     val zeros = DenseVector.zeros[Double](n-2).asDenseMatrix.reshape(n-2, 1)
-
     val v2 = DenseMatrix.horzcat(v1,zeros)
-
     val aRow = DenseMatrix(a.tail)
-
-    /*
-    [[ 2.6861574   1.          0.        ]
-     [-2.41965511  0.          1.        ]
-     [ 0.73016535  0.          0.        ]]
-     */
-
     DenseMatrix.vertcat(-aRow, v2)
   }
 
 
-  /*
-    IminusA = np.eye(n - 1) - linalg.companion(a).T
-    B = b[1:] - a[1:] * b[0]
-    # Solve zi = A*zi + B
-    zi = np.linalg.solve(IminusA, B)
-   */
+  /**
+    * Computes the stady state of the filter.
+    *
+    *  The method used here is described in the following paper:
+    *
+    *  Gustafsson, F. (1996) Determining the Initial States in Forward-Backward
+    *   Filtering.  IEEE Transactions on Signal Processing.  44(4):988-992.
+    *
+    *  @param b numerator coefficients divided by a(0) denominator
+    *  	coefficient
+    *  @param a denominator coefficients divided by a(0) denominator
+    *  	coefficient
+    *  @return initial filter states
+    *  @author Oleksandr Tarasenko <sashko.tarasenko@gmail.com>
+    *
+    */
   //TODO cover by unit tests and check manually, find steady-state by impulse response
-  def lfilter_zi(a: List[Double], b: List[Double]) = {
+  private[filter] def calculateZi(b: List[Double], a: List[Double]) = {
+    require(a.size == b.size)
    val n  = a.size
-
     val companion = companionByPolinomial(a).t
-
     val iminusA = DenseMatrix.eye[Double](n-1) - companion
-
     val bV = DenseVector(b.tail.toArray)
     val aV = DenseVector(a.tail.toArray)
     val B =  bV - aV*b.head
     val zi =iminusA\B
 
     zi
+  }
+
+
+  /*
+      b = np.atleast_1d(b)
+    a = np.atleast_1d(a)
+    x = np.asarray(x)
+
+    if method not in ["pad", "gust"]:
+        raise ValueError("method must be 'pad' or 'gust'.")
+
+    if method == "gust":
+        y, z1, z2 = _filtfilt_gust(b, a, x, axis=axis, irlen=irlen)
+        return y
+
+    # method == "pad"
+    edge, ext = _validate_pad(padtype, padlen, x, axis,
+                              ntaps=max(len(a), len(b)))
+
+    # Get the steady state of the filter's step response.
+    zi = lfilter_zi(b, a)
+
+    # Reshape zi and create x0 so that zi*x0 broadcasts
+    # to the correct value for the 'zi' keyword argument
+    # to lfilter.
+    zi_shape = [1] * x.ndim
+    zi_shape[axis] = zi.size
+    zi = np.reshape(zi, zi_shape)
+    x0 = axis_slice(ext, stop=1, axis=axis)
+
+    # Forward filter.
+    (y, zf) = lfilter(b, a, ext, axis=axis, zi=zi * x0)
+
+    # Backward filter.
+    # Create y0 so zi*y0 broadcasts appropriately.
+    y0 = axis_slice(y, start=-1, axis=axis)
+    (y, zf) = lfilter(b, a, axis_reverse(y, axis=axis), axis=axis, zi=zi * y0)
+
+    # Reverse y.
+    y = axis_reverse(y, axis=axis)
+
+    if edge > 0:
+        # Slice the actual signal from the extended signal.
+        y = axis_slice(y, start=edge, stop=-edge, axis=axis)
+
+    return y
+
+   */
+
+  //TODO Change to use Double, Float
+  def filtfilt(b: List[Double], a: List[Double], x: List[Double]): List[Double] = {
+
+    val (edge, ext) = generatePad(b, a, x)
+
+    val zi = calculateZi(b, a).toArray.toList
+    val x0 = ext.head
+    val yFwd = FilterImplementation.filter(b, a, ext, Some(zi.map(_ * x0)))
+    val y0 = yFwd.reverse.head
+
+    val yBack = FilterImplementation.filter(b, a, yFwd.reverse, Some(zi.map(_ * y0)))
+    yBack.reverse.drop(edge).dropRight(edge)
+  }
+
+  private def generatePad(b: List[Double], a: List[Double], x: List[Double]) = {
+
+    val filterOrder = math.max(b.size, a.size)
+    val tL = 3 * filterOrder // transient length
+
+    val t2 = 2.0
+    val xStart = x.drop(1).take(tL).toIndexedSeq.reverse.map { x.head * t2 - _ }
+    val xEnd = x.takeRight(tL + 1).toIndexedSeq.reverse.drop(1).map { x.last * t2 - _ }
+    val xx = xStart ++ x ++ xEnd
+    (tL, xx.toList)
   }
 
 }
