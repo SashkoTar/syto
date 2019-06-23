@@ -32,10 +32,10 @@ class HighPassFilterTest {
     assertEquals(a(0), 1.0, 0.001)
     assertEquals(a(1), 44.710406363, 0.001)
     assertEquals(a(2), 216.536892549, 0.01)
-    assertEquals(a(3), 5124.29184538, 0.001)
+    assertEquals(a(3), 5124.29184538, 0.1)
     assertEquals(b(0), 1.0, 0.001)
     assertEquals(b(1), 0.0, 0.001)
-    assertEquals(b(2), 24.8729814312, 0.001)
+    assertEquals(b(2), 24.8729814312, 0.01)
     assertEquals(b(3), 0.0, 0.001)
   }
 

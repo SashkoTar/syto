@@ -76,7 +76,7 @@ object FiltfiltImplementation {
   }
 
 
-  private def companionByPolinomial(a: List[Double]) = {
+  private def companionByPolynomial(a: List[Double]) = {
     val n  = a.size
     val v1 = diag(DenseVector.ones[Double](n-2))
     val zeros = DenseVector.zeros[Double](n-2).asDenseMatrix.reshape(n-2, 1)
@@ -106,7 +106,7 @@ object FiltfiltImplementation {
   private[filter] def calculateZi(b: List[Double], a: List[Double]) = {
     require(a.size == b.size)
    val n  = a.size
-    val companion = companionByPolinomial(a).t
+    val companion = companionByPolynomial(a).t
     val iminusA = DenseMatrix.eye[Double](n-1) - companion
     val bV = DenseVector(b.tail.toArray)
     val aV = DenseVector(a.tail.toArray)
@@ -168,6 +168,9 @@ object FiltfiltImplementation {
 
     val (edge, ext) = generatePad(b, a, x)
 
+    if(edge > x.size) {
+      throw new IllegalArgumentException(s"Input too short. It should be more than ${edge} elements")
+    }
     val zi = calculateZi(b, a).toArray.toList
     val x0 = ext.head
     val yFwd = FilterImplementation.filter(b, a, ext, Some(zi.map(_ * x0)))
@@ -177,7 +180,7 @@ object FiltfiltImplementation {
     yBack.reverse.drop(edge).dropRight(edge)
   }
 
-  private def generatePad(b: List[Double], a: List[Double], x: List[Double]) = {
+  private[filter] def generatePad(b: List[Double], a: List[Double], x: List[Double]) = {
 
     val filterOrder = math.max(b.size, a.size)
     val tL = 3 * filterOrder // transient length

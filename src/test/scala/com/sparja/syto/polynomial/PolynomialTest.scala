@@ -24,7 +24,7 @@ class PolynomialTest {
     assertEquals(polynomial.v(0), -11, 0.001)
     assertEquals(polynomial.v(-2), 45, 0.001)
     assertEquals(polynomial.v(3), 317.5, 0.001)
-    println(polynomial)
+    //println(polynomial)
   }
 
 }

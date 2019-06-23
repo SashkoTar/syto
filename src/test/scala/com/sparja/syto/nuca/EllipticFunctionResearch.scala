@@ -3,13 +3,12 @@ package com.sparja.syto.nuca
 import breeze.math.Complex
 import com.sparja.syto.common.Math._
 import com.sparja.syto.nuca.EllipticFunction.{F, K}
-import com.sparja.syto.nuca.JacobiEllipticFunction.{am, asn, sn}
-import org.junit.Test
+import com.sparja.syto.nuca.JacobiEllipticFunction.{am, sn}
 
 
-class EllipticFunctionResearch {
+private class EllipticFunctionResearch {
 
-  @Test
+  //@Test
   def calc() = {
 
     val k = 0.8
@@ -41,20 +40,14 @@ class EllipticFunctionResearch {
 */
 
 
-
-
-
-  @Test
+ // @Test
   def acos1() = {
     val z = Complex(0.34760254636020216, 0.274579463199337)
     println(acos(z))
   }
 
 
-
-
-
-  @Test
+  //@Test
   def shouldRunAsInWebPageComplex() = {
 
     def landen_(k: List[Double], err: Double):List[Double] = {
@@ -113,14 +106,14 @@ class EllipticFunctionResearch {
     u
   }
 
-  @Test
+ // @Test
   def shouldRunInverseSNComplex() = {
     val k = 0.93
     val z = Complex(0.91792, 0)
     println(asn(z, k))
   }
 
-  @Test
+  //@Test
   def shouldFindV0() = {
     val k1 = 0.0028615
     val order = 5
@@ -176,13 +169,13 @@ class EllipticFunctionResearch {
 
    */
 
-  @Test
+ // @Test
   def testCephesAm() = {
     val k = 0.93
     println(cephesAm(2.7470730, k))
   }
 
-  def cephesAm(u: Double, k: Double) = {
+  private def cephesAm(u: Double, k: Double) = {
     var a = new Array[Double](9)
     var c = new Array[Double](9)
     a(0) = 1.0

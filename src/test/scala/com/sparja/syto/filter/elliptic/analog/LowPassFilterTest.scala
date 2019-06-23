@@ -35,7 +35,7 @@ class LowPassFilterTest {
     assertEquals(a(3), 195.148916216, 0.01)
     assertEquals(b(0), 0.485393536936, 0.001)
     assertEquals(b(1), 0.0, 0.001)
-    assertEquals(b(2), 195.148916216, 0.001)
+    assertEquals(b(2), 195.148916216, 0.1)
   }
 
 
