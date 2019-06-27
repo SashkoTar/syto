@@ -1,11 +1,10 @@
 package com.sparja.syto.filter.core
 
 import breeze.math.Complex
+import com.sparja.syto.common.Math.{cos, pow, sin, sqrt}
+import com.sparja.syto.nuca.EllipticIntegral.K
+import com.sparja.syto.nuca.JacobiEllipticFunction._
 import com.sparja.syto.polynomial.BesselPolynomial
-import com.sparja.syto.polynomial.root.WeierstrassRootFinder
-import com.sparja.syto.nuca.EllipticFunction.{K, ellipInc}
-import com.sparja.syto.nuca.JacobiEllipticFunction.{am, cd, sn, snComp, asn, cdComp}
-import com.sparja.syto.common.Math.{PI, asin, cos, sin, sqrt, pow}
 import org.apache.commons.math3.util.FastMath
 
 object Prototype {
@@ -50,7 +49,7 @@ object Prototype {
 
     val zeros = List.empty
     val pol = BesselPolynomial.calculate(order)
-    val roots = WeierstrassRootFinder.solve(pol)
+    val roots = pol.findRoots
     val a_last = fallingFactorial(2 * order, order) / math.pow(2, order).toInt
     val reversedPoles = roots.map(1 / _)
 

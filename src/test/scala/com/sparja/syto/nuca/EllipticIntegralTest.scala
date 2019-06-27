@@ -1,13 +1,13 @@
 package com.sparja.syto.nuca
 
 
-import com.sparja.syto.nuca.EllipticFunction.ellipInc
+import com.sparja.syto.nuca.EllipticIntegral.ellipInc
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
 import scala.math.Pi
 
-class EllipticFunctionTest {
+class EllipticIntegralTest {
 
 
   def ellipkIncDegree(angle: Double, am: Double) = ellipInc(angle * Pi / 180, am * Pi / 180)

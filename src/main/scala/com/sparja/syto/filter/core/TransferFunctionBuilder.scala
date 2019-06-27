@@ -1,7 +1,7 @@
 package com.sparja.syto.filter.core
 
 import breeze.math.Complex
-import com.sparja.syto.polynomial.PolynomialSupport
+import com.sparja.syto.polynomial.Polynomial
 import org.apache.commons.math3.util.FastMath.tan
 
 object TransferFunctionBuilder {
@@ -109,8 +109,8 @@ class TransferFunctionBuilder {
 
 
   def coefficients = {
-    val b = PolynomialSupport.calculateCoefficients(roots.zeros).map(_.real)
-    val a = PolynomialSupport.calculateCoefficients(roots.poles).map(_.real)
+    val b = Polynomial.calculateCoefficients(roots.zeros).map(_.real)
+    val a = Polynomial.calculateCoefficients(roots.poles).map(_.real)
     val k = roots.scale
     (b.map(_ * k), a)
   }

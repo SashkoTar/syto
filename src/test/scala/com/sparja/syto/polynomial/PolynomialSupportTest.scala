@@ -14,7 +14,7 @@ class PolynomialSupportTest {
   @Test
   def shouldFindCoefficientsByRoots() = {
     val roots = List(Complex(0.7143, 0.33), Complex(0.6, 0), Complex(0.7143, -0.33))
-    val coefficients = PolynomialSupport.calculateCoefficients(roots)
+    val coefficients = Polynomial.calculateCoefficients(roots)
     assertEquals(coefficients.head.real, 1, 0.01)
     assertEquals(coefficients(1).real, -2.0286, 0.01)
     assertEquals(coefficients(2).real, 1.4762, 0.01)
@@ -24,7 +24,7 @@ class PolynomialSupportTest {
   @Test
   def shouldReturnOneForEmptyRoots() = {
     val roots = List.empty[Complex]
-    val coefficients = PolynomialSupport.calculateCoefficients(roots)
+    val coefficients = Polynomial.calculateCoefficients(roots)
     assertEquals(coefficients.head.real, 1, 0.01)
     assertEquals(coefficients.size, 1)
 

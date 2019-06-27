@@ -1,5 +1,10 @@
 package com.sparja.syto.polynomial
 
+
+//TODO Add to Polynomial hierarchy
+class BesselPolynomial
+
+
 object BesselPolynomial {
 
   //TODO refactor to be Polynomial. Quit ugly solution however workable
@@ -21,10 +26,7 @@ object BesselPolynomial {
         .mapValues(_.reduce((a, b) => a.add(b))).values.toList.sortWith(_.degree > _.degree)
       return Polynomial(polSum)
     }
-
-
-
-
   }
+
 
 }

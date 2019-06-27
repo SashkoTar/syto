@@ -2,7 +2,6 @@ package com.sparja.syto.filter.core
 
 import breeze.math.Complex
 import com.sparja.syto.polynomial.BesselPolynomial
-import com.sparja.syto.polynomial.root.WeierstrassRootFinder
 import com.sparja.syto.util.ComplexAssertion
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
@@ -33,10 +32,8 @@ class BesselPrototypeTest {
   def shouldCalculateNormFactor() = {
 
     def fallingFactorial(x: Int, n: Int) = (0 to n-1).map(x - _).product
-
     val order = 3
-    val pol = BesselPolynomial.calculate(order)
-    val roots = WeierstrassRootFinder.solve(pol)
+    val roots = BesselPolynomial.calculate(order).findRoots
     val a_last = fallingFactorial(2*order, order) / math.pow(2, order).toInt
     val reversedPoles = roots.map(1/_)
 
