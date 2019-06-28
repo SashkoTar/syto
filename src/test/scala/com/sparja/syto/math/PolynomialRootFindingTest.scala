@@ -1,7 +1,6 @@
-package com.sparja.syto.polynomial
+package com.sparja.syto.math
 
 import breeze.math.Complex
-import com.sparja.syto.polynomial.root.WeierstrassRootFinder
 import com.sparja.syto.util.ComplexAssertion
 import org.junit.Test
 

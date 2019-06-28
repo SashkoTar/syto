@@ -1,4 +1,4 @@
-package com.sparja.syto.polynomial
+package com.sparja.syto.math
 
 import breeze.math.Complex
 import junit.framework.TestCase.assertEquals

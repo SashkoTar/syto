@@ -1,7 +1,7 @@
 package com.sparja.syto.filter.bessel
 
 import breeze.math.Complex
-import com.sparja.syto.filter.core.Roots
+import com.sparja.syto.filter.Roots
 
 object BesselMockedPrototypeRoots {
 

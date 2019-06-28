@@ -1,7 +1,7 @@
-package com.sparja.syto.filter.core
+package com.sparja.syto.filter
 
 import breeze.math.Complex
-import com.sparja.syto.polynomial.Polynomial
+import com.sparja.syto.math.Polynomial
 import org.apache.commons.math3.util.FastMath.tan
 
 object TransferFunctionBuilder {
@@ -11,13 +11,12 @@ object TransferFunctionBuilder {
 //Music: Splin, Tantsui.
 class TransferFunctionBuilder {
 
+  private var prototypesRoots = Roots(List.empty[Complex], List.empty[Complex], 1.0)
+  private var roots = Roots(List.empty[Complex], List.empty[Complex], 1.0)
+  private var isDigital = false
+  private var samplingFrequency = 1.0
 
-  var prototypesRoots = Roots(List.empty[Complex], List.empty[Complex], 1.0)
-  var roots = Roots(List.empty[Complex], List.empty[Complex], 1.0)
-  var isDigital = false
-  var samplingFrequency = 1.0
-
-  def prototype(f:(Int) => Roots, order: Int) = {
+  private def prototype(f:(Int) => Roots, order: Int) = {
     prototypesRoots = f(order)
     roots = f(order)
     this
@@ -36,15 +35,13 @@ class TransferFunctionBuilder {
   }
 
 
-
-
-  def transformBilinear(roots: List[Complex]) = {
+ private def transformBilinear(roots: List[Complex]) = {
     roots.map(p => {
       (4 + p) / (4 - p)
     })
   }
 
-  def transformBilinearlyRoots(roots: Roots): Roots = {
+  private def transformBilinearlyRoots(roots: Roots): Roots = {
     val degree = roots.poles.size - roots.zeros.size
     val fs = 2.0 //TODO What is the magic number???
     val transformedZeros = transformBilinear(roots.zeros):::List.fill(degree)(-Complex.one)
@@ -55,7 +52,7 @@ class TransferFunctionBuilder {
     Roots(transformedZeros, transformedPoles, k.real)
   }
 
-  def preWrapFrequency(frequency: Double): Double = {
+  private def preWrapFrequency(frequency: Double): Double = {
     val fs = 2.0 //TODO What is the magic number???
     val wn = 2 * frequency / samplingFrequency
     2 * fs * tan(Math.PI * wn / fs)
@@ -72,7 +69,7 @@ class TransferFunctionBuilder {
     this
   }
 
-  def transformTo(f:(Roots, Double, Double) => Roots, lowFrequency: Double, highFrequency: Double) = {
+  private def transformTo(f:(Roots, Double, Double) => Roots, lowFrequency: Double, highFrequency: Double) = {
     if (isDigital) {
       val preWrapedLowFrequency = preWrapFrequency(lowFrequency)
       val preWrapedHighFrequency = preWrapFrequency(highFrequency)
@@ -82,6 +79,10 @@ class TransferFunctionBuilder {
       roots = f(prototypesRoots, lowFrequency, highFrequency)
     }
     this
+  }
+
+  def butterworthApproximation(order: Int) = {
+    prototype(Prototype.butterworth, order)
   }
 
   def transformToHighPass(cutOffFrequency: Double) = {

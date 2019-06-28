@@ -1,7 +1,7 @@
 package com.sparja.syto.filter.chebyshev.digital
 
 
-import com.sparja.syto.filter.core.{Prototype, TransferFunctionBuilder}
+import com.sparja.syto.filter.{Prototype, TransferFunctionBuilder}
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 

@@ -1,10 +1,9 @@
-package com.sparja.syto.nuca
+package com.sparja.syto.math
 
 import breeze.math.Complex
-import com.sparja.syto.common.Math.{sqrt, asin, cos, sin, pow}
+import com.sparja.syto.math._
 
-
-object JacobiEllipticFunction {
+private[syto] object JacobiEllipticFunction {
 
 
   private def iterateAB(coef: List[(Double, Double, Double)]): List[(Double, Double, Double)] = {
@@ -94,13 +93,6 @@ object JacobiEllipticFunction {
   def cd(u: Double, k: Double) = cn(u, k) / dn(u, k)
 
   def cdComp(z: Complex, k: Double) = cnComp(z, k) / dnComp(z, k)
-
-
-  def asn_bu(z: Complex, k: Double) = {
-    println("Z: " + z)
-    Complex(0, 1.4279)
-  }
-
 
   def asn(z: Complex, k: Double):Complex = {
     def landen_(k: List[Double], err: Double):List[Double] = {

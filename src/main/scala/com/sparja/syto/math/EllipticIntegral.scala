@@ -1,28 +1,24 @@
-package com.sparja.syto.nuca
+package com.sparja.syto.math
 
 
-import com.sparja.syto.common.Math._
-
-import scala.math.{asin, cos, tan}
-
-object EllipticIntegral {
+private[syto] object EllipticIntegral {
 
   private def nextTheta(phi: Double) = asin(tan(phi / 2) * tan(phi / 2))
 
   private def nextAmpl(theta: Double, am: Double) = {
     val a = cos(theta) * tan(am)
-    val b = math.atan(a)
+    val b = atan(a)
     def adjustPhi1(phi: Double, phi1: Double): Double = {
-      if (phi1 > phi - math.Pi / 2)
+      if (phi1 > phi - PI / 2)
         phi1
       else
-        adjustPhi1(phi, phi1 + math.Pi)
+        adjustPhi1(phi, phi1 + PI)
     }
     am + adjustPhi1(am, b)
   }
 
   private def printAngle(name: String, angle: Double) = {
-    val degrees = angle * 180 / math.Pi
+    val degrees = angle * 180 / PI
     val d = degrees.asInstanceOf[Int] // Truncate the decimals
     val t1 = (degrees - d) * 60
     val m = t1.asInstanceOf[Int]
@@ -43,7 +39,7 @@ object EllipticIntegral {
       }
     }
     val kam = calculateKam(List((k, am))).dropRight(1)
-    kam.head._2 * cos(kam.head._1) * Math.sqrt(kam.tail.map(a => cos(a._1)).product / cos(k)) / Math.pow(2, kam.size)
+    kam.head._2 * cos(kam.head._1) * sqrt(kam.tail.map(a => cos(a._1)).product / cos(k)) / pow(2, kam.size)
   }
 
 

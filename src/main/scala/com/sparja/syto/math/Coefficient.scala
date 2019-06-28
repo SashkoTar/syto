@@ -1,8 +1,8 @@
-package com.sparja.syto.polynomial
+package com.sparja.syto.math
 
 import breeze.math.Complex
 
-case class Coefficient(real: Double, imaginary: Double, degree: Int) {
+private[math] case class Coefficient(real: Double, imaginary: Double, degree: Int) {
 
   val backedValue = Complex(real, imaginary)
 

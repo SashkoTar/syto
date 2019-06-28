@@ -1,7 +1,8 @@
 package com.sparja.syto.filter.core
 
 import breeze.math.Complex
-import com.sparja.syto.polynomial.BesselPolynomial
+import com.sparja.syto.filter.Prototype
+import com.sparja.syto.math.BesselPolynomial
 import com.sparja.syto.util.ComplexAssertion
 import junit.framework.TestCase.assertEquals
 import org.junit.Test

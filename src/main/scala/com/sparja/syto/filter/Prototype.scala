@@ -1,16 +1,16 @@
-package com.sparja.syto.filter.core
+package com.sparja.syto.filter
 
 import breeze.math.Complex
-import com.sparja.syto.common.Math.{cos, pow, sin, sqrt}
-import com.sparja.syto.nuca.EllipticIntegral.K
-import com.sparja.syto.nuca.JacobiEllipticFunction._
-import com.sparja.syto.polynomial.BesselPolynomial
+import com.sparja.syto.math.{cos, pow, sin, sqrt, PI}
+import com.sparja.syto.math.BesselPolynomial
+import com.sparja.syto.math.EllipticIntegral.K
+import com.sparja.syto.math.JacobiEllipticFunction._
 import org.apache.commons.math3.util.FastMath
 
 object Prototype {
 
   //TODO extract to specific module
-  private[core] def normFactor(p: List[Complex], k: Double): Double = {
+  private[filter] def normFactor(p: List[Complex], k: Double): Double = {
 
     def G(w: Double) = {
       //""" Gain of filter """
@@ -67,7 +67,7 @@ object Prototype {
       case "mag" =>
         val factor = normFactor(reversedPoles, a_last)
         val normalizedRoots = reversedPoles.map(_ / factor)
-        val k = math.pow(factor, -order) * a_last
+        val k = pow(factor, -order) * a_last
         Roots(zeros, normalizedRoots, k)
 
       case _ => throw new IllegalArgumentException("The parameter 'norm' is incorrect. Must one of [phase, delay, mag]")
@@ -90,7 +90,7 @@ object Prototype {
   def chebyshevII(order: Int, rp: Double) = {
     val zeros = {
       val n = if (order % 2 == 0) order / 2 else (order - 1) / 2
-      val first = (1 to n).map(k => (2 * k - 1) * Math.PI / (2 * order))
+      val first = (1 to n).map(k => (2 * k - 1) * PI / (2 * order))
         .map(theta => Complex.i / cos(theta)).toList
       first ::: first.map(_.conjugate)
     }
@@ -104,7 +104,7 @@ object Prototype {
       def im(theta: Double) = cos(theta) * Math.cosh(mu) / (cos(theta) * Math.cosh(mu) * cos(theta) * Math.cosh(mu) + sin(theta) * Math.sinh(mu) * sin(theta) * Math.sinh(mu))
 
       (1 to order)
-        .map(k => (2 * k - 1) * Math.PI / (2 * order))
+        .map(k => (2 * k - 1) * PI / (2 * order))
         .map(theta => Complex(r(theta), im(theta))).toList
 
     }
@@ -114,14 +114,14 @@ object Prototype {
   }
 
   def chebyshev(order: Int, rp: Double) = {
-    val eps = Math.sqrt(Math.pow(10, 0.1 * rp) - 1.0)
+    val eps = sqrt(pow(10, 0.1 * rp) - 1.0)
     val mu = FastMath.asinh(1 / eps) / order
 
     val zeros = List.empty[Complex]
 
     val poles = {
       (1 to order)
-        .map(k => (2 * k - 1) * Math.PI / (2 * order))
+        .map(k => (2 * k - 1) * PI / (2 * order))
         .map(theta => Complex(-sin(theta) * Math.sinh(mu), cos(theta) * Math.cosh(mu))).toList
     }
 
@@ -135,8 +135,8 @@ object Prototype {
   def elliptic(order: Int, rp: Double, rs: Double) = {
     def findZero(u: Double, k: Double) = Complex.i / (k * cd(u * K(k), k))
 
-    val ep = sqrt(Math.pow(10, 0.1 * rp) - 1.0)
-    val es = sqrt(Math.pow(10, 0.1 * rs) - 1.0)
+    val ep = sqrt(pow(10, 0.1 * rp) - 1.0)
+    val es = sqrt(pow(10, 0.1 * rs) - 1.0)
     val k1 = ep/es
     val k1p = sqrt(1 - k1 * k1)
 

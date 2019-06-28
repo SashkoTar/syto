@@ -1,5 +1,6 @@
 package com.sparja.syto.filter.core
 
+import com.sparja.syto.filter.Prototype
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 

@@ -1,7 +1,6 @@
-package com.sparja.syto.nuca
+package com.sparja.syto.math
 
-
-import com.sparja.syto.nuca.EllipticIntegral.ellipInc
+import com.sparja.syto.math.EllipticIntegral.ellipInc
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 

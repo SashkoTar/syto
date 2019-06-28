@@ -1,7 +1,7 @@
 package com.sparja.syto.filter.bessel.digital
 
+import com.sparja.syto.filter.{Prototype, Roots, TransferFunctionBuilder}
 import com.sparja.syto.filter.bessel.BesselMockedPrototypeRoots
-import com.sparja.syto.filter.core.{Prototype, Roots, TransferFunctionBuilder}
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 

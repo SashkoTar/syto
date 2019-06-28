@@ -1,11 +1,10 @@
-package com.sparja.syto.polynomial
-
+package com.sparja.syto.math
 
 //TODO Add to Polynomial hierarchy
-class BesselPolynomial
 
 
-object BesselPolynomial {
+
+private[syto] object BesselPolynomial {
 
   //TODO refactor to be Polynomial. Quit ugly solution however workable
   def calculate(order: Int): Polynomial = {

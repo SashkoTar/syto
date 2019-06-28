@@ -1,4 +1,4 @@
-package com.sparja.syto.polynomial
+package com.sparja.syto.math
 
 import org.junit.Test
 

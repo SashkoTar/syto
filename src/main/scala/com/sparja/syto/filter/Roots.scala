@@ -1,4 +1,4 @@
-package com.sparja.syto.filter.core
+package com.sparja.syto.filter
 
 import breeze.math.Complex
 

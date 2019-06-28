@@ -1,9 +1,7 @@
 package com.sparja.syto.filter.core
 
 import breeze.math.Complex
-import com.sparja.syto.common.Math.{PI, asin, sin, sqrt}
-import com.sparja.syto.nuca.EllipticIntegral.K
-import com.sparja.syto.nuca.JacobiEllipticFunction.{am, cd}
+import com.sparja.syto.filter.Prototype
 import com.sparja.syto.util.ComplexAssertion
 import junit.framework.TestCase.assertEquals
 import org.junit.Test

@@ -1,14 +1,9 @@
 package com.sparja.syto.filter
 
-
-import com.sparja.syto.filter.FiltfiltImplementation.{filtfilt, calculateZi}
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
 class FiltfiltImplementationTest {
-
-
-
 
   @Test
   def shouldCalculateSteadyStateResponse():Unit = {

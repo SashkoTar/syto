@@ -1,7 +1,7 @@
-package com.sparja.syto.nuca
+package com.sparja.syto.math
 
 import breeze.math.Complex
-import com.sparja.syto.nuca.JacobiEllipticFunction._
+import com.sparja.syto.math.JacobiEllipticFunction._
 import com.sparja.syto.util.ComplexAssertion
 import junit.framework.TestCase.assertEquals
 import org.junit.Test

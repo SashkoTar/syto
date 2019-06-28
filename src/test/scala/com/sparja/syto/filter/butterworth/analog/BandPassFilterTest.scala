@@ -1,6 +1,6 @@
 package com.sparja.syto.filter.butterworth.analog
 
-import com.sparja.syto.filter.core.{Prototype, TransferFunctionBuilder}
+import com.sparja.syto.filter.{Prototype, TransferFunctionBuilder}
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
@@ -8,7 +8,7 @@ class BandPassFilterTest {
 
   def calculateCoefficients(order: Int, lowFreq: Double, highFreq: Double) = {
     new TransferFunctionBuilder()
-      .prototype(Prototype.butterworth, order)
+      .butterworthApproximation(order)
       .transformToBandPass(lowFreq, highFreq)
       .coefficients
   }

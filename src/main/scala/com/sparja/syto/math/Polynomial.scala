@@ -1,8 +1,8 @@
-package com.sparja.syto.polynomial
+package com.sparja.syto.math
 
 import breeze.math.Complex
 
-class Polynomial(val coefficients: List[Coefficient]) {
+private[syto] class Polynomial(val coefficients: List[Coefficient]) {
 
   //TODO find generic way for different types, implicit?
  def v(x: Double): Double = {
