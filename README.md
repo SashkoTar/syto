@@ -5,6 +5,8 @@ Digital Signal Processing library for Scala
 # Filter fundamentals
 
 
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;x_n \to \left \langle filter \right \rangle \to y_n"/>
+
 <img src="https://latex.codecogs.com/svg.latex?\Large&space;H(z)=\frac{b_{0}+b_{1}z^{-1}+b_{m}z^{-m}}{a_{0}+a_{1}z^{-1}+a_{n}z^{-n}}"/>
 
 ## Types of approximation
