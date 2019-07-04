@@ -4,7 +4,7 @@ Digital Signal Processing library for Scala
 
 # Filter fundamentals
 
-
+Simpy digital or analog filter can be drawn schematically like this. There is input sequence of values handled by linera time-invariant filter, which generates an output sequence. 
 
 <img src="https://latex.codecogs.com/svg.latex?\Large&space;{x_n}\to\left\langle{filter}\right\rangle\to{y_n}"/>
 
