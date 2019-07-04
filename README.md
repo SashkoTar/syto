@@ -2,23 +2,28 @@
 
 Digital Signal Processing library for Scala
 
-# This is an
-## This is an 
-###### This is an 
+# Filter fundamentals
 
-*This text will be italic*
-_This will also be italic_
+## Types of approximation
 
-**This text will be bold**
-__This will also be bold__
+## Types of filters
 
-_You **can** combine them_
+## Filtering
 
-```scala
-def dd(x:Int): Float = {
-  if (x > 0)
-    3.4
-  else 
-    5.6
-}
+# Getting started with Syto
+
+## Building Syto
+
+## Syto as Maven dependency
+
+## Usage
+
+```scala 
+   val (b, a) = new TransferFunctionBuilder()
+      .butterworthApproximation(order)
+      .digitalize(sampleFreq)
+      .transformToLowPass(cufOffFreq)
+      .coefficients
 ```
+
+
