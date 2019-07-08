@@ -1,16 +1,16 @@
 package com.sparja.syto.filter
 
 import breeze.math.Complex
-import com.sparja.syto.math.{cos, pow, sin, sqrt, PI}
-import com.sparja.syto.math.BesselPolynomial
 import com.sparja.syto.math.EllipticIntegral.K
 import com.sparja.syto.math.JacobiEllipticFunction._
-import org.apache.commons.math3.util.FastMath
+import com.sparja.syto.math.{BesselPolynomial, _}
 
-object Prototype {
+import scala.collection.immutable.Seq
+
+private[filter] object Approximation {
 
   //TODO extract to specific module
-  private[filter] def normFactor(p: List[Complex], k: Double): Double = {
+  private[filter] def normFactor(p: Seq[Complex], k: Double): Double = {
 
     def G(w: Double) = {
       //""" Gain of filter """
@@ -25,7 +25,7 @@ object Prototype {
 
     def secantMethod(f: (Double) => Double, x0: Double, x1: Double): Double = {
       val x2 = x1 - f(x1) * (x1 - x0) / (f(x1) - f(x0))
-      if (math.abs(x2 - x1) < 0.001)
+      if (abs(x2 - x1) < 0.001)
         x2
       else
         secantMethod(f, x1, x2)
@@ -50,14 +50,14 @@ object Prototype {
     val zeros = List.empty
     val pol = BesselPolynomial.calculate(order)
     val roots = pol.findRoots
-    val a_last = fallingFactorial(2 * order, order) / math.pow(2, order).toInt
+    val a_last = fallingFactorial(2 * order, order) / pow(2, order).toInt
     val reversedPoles = roots.map(1 / _)
 
     norm match {
 
       case "phase" =>
-        val degree = -math.log10(a_last) / order
-        val poles = reversedPoles.map(_ * math.pow(10, degree))
+        val degree = -log10(a_last) / order
+        val poles = reversedPoles.map(_ * pow(10, degree))
         Roots(zeros, poles, 1.0)
 
       case "delay" =>
@@ -76,9 +76,9 @@ object Prototype {
   }
 
 
-  def butterworth(order: Int) = {
+   def butterworth(order: Int) = {
     val poles = (1 to order)
-      .map(k => (2 * k - 1) * Math.PI / (2 * order))
+      .map(k => (2 * k - 1) * PI / (2 * order))
       .map(theta => Complex(-sin(theta), cos(theta))).toList
     val zeros = List.empty
     Roots(zeros, poles, 1.0)
@@ -87,7 +87,7 @@ object Prototype {
   //TODO investigate how use object to improve the code
   //object chebyshevII
 
-  def chebyshevII(order: Int, rp: Double) = {
+   def chebyshevII(order: Int, rp: Double) = {
     val zeros = {
       val n = if (order % 2 == 0) order / 2 else (order - 1) / 2
       val first = (1 to n).map(k => (2 * k - 1) * PI / (2 * order))
@@ -96,43 +96,43 @@ object Prototype {
     }
 
     val poles = {
-      val eps = Math.sqrt(Math.pow(10, 0.1 * rp) - 1.0)
-      val mu = FastMath.asinh(eps) / order
+      val eps = sqrt(pow(10, 0.1 * rp) - 1.0)
+      val mu = asinh(eps) / order
 
-      def r(theta: Double) = -sin(theta) * Math.sinh(mu) / (cos(theta) * Math.cosh(mu) * cos(theta) * Math.cosh(mu) + sin(theta) * Math.sinh(mu) * sin(theta) * Math.sinh(mu))
+      def r(theta: Double) = -sin(theta) * sinh(mu) / (cos(theta) * cosh(mu) * cos(theta) * cosh(mu) + sin(theta) * sinh(mu) * sin(theta) * sinh(mu))
 
-      def im(theta: Double) = cos(theta) * Math.cosh(mu) / (cos(theta) * Math.cosh(mu) * cos(theta) * Math.cosh(mu) + sin(theta) * Math.sinh(mu) * sin(theta) * Math.sinh(mu))
+      def im(theta: Double) = cos(theta) * cosh(mu) / (cos(theta) * cosh(mu) * cos(theta) * cosh(mu) + sin(theta) * sinh(mu) * sin(theta) * sinh(mu))
 
       (1 to order)
         .map(k => (2 * k - 1) * PI / (2 * order))
         .map(theta => Complex(r(theta), im(theta))).toList
 
     }
-    val scale = Math.pow(-1, order) * poles.product / zeros.product
+    val scale = pow(-1, order) * poles.product / zeros.product
 
     Roots(zeros, poles, scale.real)
   }
 
-  def chebyshev(order: Int, rp: Double) = {
+   def chebyshev(order: Int, rp: Double) = {
     val eps = sqrt(pow(10, 0.1 * rp) - 1.0)
-    val mu = FastMath.asinh(1 / eps) / order
+    val mu = asinh(1 / eps) / order
 
     val zeros = List.empty[Complex]
 
     val poles = {
       (1 to order)
         .map(k => (2 * k - 1) * PI / (2 * order))
-        .map(theta => Complex(-sin(theta) * Math.sinh(mu), cos(theta) * Math.cosh(mu))).toList
+        .map(theta => Complex(-sin(theta) * sinh(mu), cos(theta) * cosh(mu))).toList
     }
 
-    val scale = Math.pow(-1, order) * (if (order % 2 == 0) poles.product / sqrt(1 + eps * eps) else poles.product)
+    val scale = pow(-1, order) * (if (order % 2 == 0) poles.product / sqrt(1 + eps * eps) else poles.product)
 
     Roots(zeros, poles, scale.real)
   }
 
 
 
-  def elliptic(order: Int, rp: Double, rs: Double) = {
+   def elliptic(order: Int, rp: Double, rs: Double) = {
     def findZero(u: Double, k: Double) = Complex.i / (k * cd(u * K(k), k))
 
     val ep = sqrt(pow(10, 0.1 * rp) - 1.0)
@@ -165,7 +165,6 @@ object Prototype {
     val preScale = poles.map(_.unary_-).product / zeros.map(_.unary_-).product
 
     val scale = if (order % 2 == 0) preScale / sqrt(1 + ep * ep) else preScale
-
 
     Roots(zeros, poles, scale.real)
   }

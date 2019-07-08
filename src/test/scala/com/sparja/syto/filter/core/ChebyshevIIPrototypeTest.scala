@@ -1,6 +1,6 @@
 package com.sparja.syto.filter.core
 
-import com.sparja.syto.filter.Prototype
+import com.sparja.syto.filter.Approximation
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
@@ -8,7 +8,7 @@ class ChebyshevIIPrototypeTest {
 
   @Test
   def shouldFindZerosAndPoles() = {
-    val roots = Prototype.chebyshevII(2, 10f)
+    val roots = Approximation.chebyshevII(2, 10f)
     assertEquals(roots.zeros.size, 2)
     assertEquals(roots.zeros(0).real, 0, 0.001)
     assertEquals(roots.zeros(0).imag, 1.4142, 0.001)
@@ -25,7 +25,7 @@ class ChebyshevIIPrototypeTest {
 
   @Test
   def shouldFindZeros() = {
-    val roots = Prototype.chebyshevII(3, 10f)
+    val roots = Approximation.chebyshevII(3, 10f)
     assertEquals(roots.zeros.size, 2)
     assertEquals(roots.zeros(0).real, 0, 0.001)
     assertEquals(roots.zeros(0).imag, 1.15470054, 0.001)
@@ -36,7 +36,7 @@ class ChebyshevIIPrototypeTest {
 
   @Test
   def shouldFindZerosFiveOrder() = {
-    val roots = Prototype.chebyshevII(5, 10f)
+    val roots = Approximation.chebyshevII(5, 10f)
     assertEquals(roots.zeros.size, 4)
     assertEquals(roots.zeros(0).imag, 1.05146222, 0.001)
     assertEquals(roots.zeros(1).imag, 1.70130162, 0.001)

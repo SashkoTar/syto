@@ -1,8 +1,9 @@
 package com.sparja.syto.math
 
 import breeze.math.Complex
+import scala.collection.immutable.Seq
 
-private[syto] class Polynomial(val coefficients: List[Coefficient]) {
+private[syto] class Polynomial(val coefficients: Seq[Coefficient]) {
 
   //TODO find generic way for different types, implicit?
  def v(x: Double): Double = {
@@ -14,9 +15,9 @@ private[syto] class Polynomial(val coefficients: List[Coefficient]) {
   }
 
   //Weierstrass root-finding algorithm
-  def findRoots: List[Complex] = {
+  def findRoots: Seq[Complex] = {
 
-    def correct(aN: Double, roots: List[Complex], epsilon: Double, func: (Complex) => Complex): List[Complex] = {
+    def correct(aN: Double, roots: Seq[Complex], epsilon: Double, func: (Complex) => Complex): Seq[Complex] = {
       val correctedRoots = roots.map(x => (x, roots.filter(_ != x).map(x - _).product))
         .map { case (x, root) => x - func(x) / (aN * root) }
       val maxError = correctedRoots.map(x => func(x).abs).max
@@ -43,16 +44,16 @@ private[syto] class Polynomial(val coefficients: List[Coefficient]) {
 
 object Polynomial {
 
-  def apply(coefficients: List[Coefficient]): Polynomial = new Polynomial(coefficients)
+  def apply(coefficients: Seq[Coefficient]): Polynomial = new Polynomial(coefficients)
 
-  def calculateCoefficients(roots: List[Complex]): List[Complex] = {
+  def calculateCoefficients(roots: Seq[Complex]): Seq[Complex] = {
     val z = Coefficient(1.0, 0.0, 1)
     val r = roots.map(_.unary_-).map(root => Coefficient(root.real, root.imag, 0))
-    def multiply(acc: List[Coefficient], remainingRoots: List[Coefficient]): List[Coefficient] = {
+    def multiply(acc: Seq[Coefficient], remainingRoots: Seq[Coefficient]): Seq[Coefficient] = {
       if (remainingRoots.nonEmpty) {
         val zacc = acc.map(_.multiply(z))
         val pacc = acc.map(_.multiply(remainingRoots.head))
-        multiply(zacc:::pacc, remainingRoots.tail)
+        multiply(zacc++pacc, remainingRoots.tail)
       }
       else
         acc.groupBy(_.degree)

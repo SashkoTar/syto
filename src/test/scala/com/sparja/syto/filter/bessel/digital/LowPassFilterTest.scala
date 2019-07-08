@@ -1,15 +1,14 @@
 package com.sparja.syto.filter.bessel.digital
 
-import com.sparja.syto.filter.{Prototype, Roots, TransferFunctionBuilder}
-import com.sparja.syto.filter.bessel.BesselMockedPrototypeRoots
+import com.sparja.syto.filter.{Approximation, Roots, TransferFunctionBuilder}
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
 class LowPassFilterTest {
 
-  def calculateCoefficients(f: () => Roots, cutOffFrequency: Double, sampleFreq: Double) = {
+  def calculateCoefficients(order:Int, cutOffFrequency: Double, sampleFreq: Double) = {
     new TransferFunctionBuilder()
-      .prototype(f)
+      .besselApproximation(order)
       .digitalize(sampleFreq)
       .transformToLowPass(cutOffFrequency)
       .coefficients
@@ -17,7 +16,7 @@ class LowPassFilterTest {
 
   @Test
   def shouldCalculateTwoOrderFilter() = {
-    val (b, a) = calculateCoefficients(() => Prototype.bessel(2), 3.0, 40.0)
+    val (b, a) = calculateCoefficients(2, 3.0, 40.0)
     assertEquals(a(0), 1.0, 0.001)
     assertEquals(a(1), -1.27910914999, 0.001)
     assertEquals(a(2), 0.435577759828, 0.001)
@@ -28,7 +27,7 @@ class LowPassFilterTest {
 
   @Test
   def shouldCalculateThreeOrderFilter() = {
-    val (b, a) = calculateCoefficients(() => Prototype.bessel(3), 3.0, 40.0)
+    val (b, a) = calculateCoefficients(3, 3.0, 40.0)
     assertEquals(a(0), 1.0, 0.001)
     assertEquals(a(1), -1.95419013462, 0.001)
     assertEquals(a(2), 1.33057052865, 0.001)

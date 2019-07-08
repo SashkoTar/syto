@@ -43,7 +43,6 @@ private[syto] object EllipticIntegral {
   }
 
 
-
   def K(k: Double) = F(PI/2, k)
 
   def F(z: Double, k: Double) = ellipInc(asin(k), z)

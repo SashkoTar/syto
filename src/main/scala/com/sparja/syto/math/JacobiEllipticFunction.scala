@@ -1,7 +1,6 @@
 package com.sparja.syto.math
 
 import breeze.math.Complex
-import com.sparja.syto.math._
 
 private[syto] object JacobiEllipticFunction {
 
@@ -117,7 +116,6 @@ private[syto] object JacobiEllipticFunction {
 
     val um = nextU(z, kList.head, kList.tail)
     val u = 2/Math.PI * asin(um)  // Inverse SN
-   // println(s"\n u(M) = $um, u = $u")
     u
   }
 

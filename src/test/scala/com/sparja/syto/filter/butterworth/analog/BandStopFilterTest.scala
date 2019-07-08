@@ -1,6 +1,6 @@
 package com.sparja.syto.filter.butterworth.analog
 
-import com.sparja.syto.filter.{Prototype, TransferFunctionBuilder}
+import com.sparja.syto.filter.{Approximation, TransferFunctionBuilder}
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 

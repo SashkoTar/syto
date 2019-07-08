@@ -1,6 +1,6 @@
 package com.sparja.syto.filter.chebyshevII.analog
 
-import com.sparja.syto.filter.{Prototype, TransferFunctionBuilder}
+import com.sparja.syto.filter.{Approximation, TransferFunctionBuilder}
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
@@ -8,7 +8,7 @@ class BandPassFilterTest {
 
   def calculateCoefficients(order: Int, ripple: Double, lowFreq: Double, highFreq: Double) = {
     new TransferFunctionBuilder()
-      .prototype(Prototype.chebyshevII, order, ripple)
+      .chebyshevIIApproximation(order, ripple)
       .transformToBandPass(lowFreq, highFreq)
       .coefficients
   }

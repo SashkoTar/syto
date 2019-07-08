@@ -1,7 +1,7 @@
 package com.sparja.syto.filter.core
 
 import breeze.math.Complex
-import com.sparja.syto.filter.Prototype
+import com.sparja.syto.filter.Approximation
 import com.sparja.syto.math.BesselPolynomial
 import com.sparja.syto.util.ComplexAssertion
 import junit.framework.TestCase.assertEquals
@@ -9,7 +9,7 @@ import org.junit.Test
 
 class BesselPrototypeTest {
 
-  def calculateRoots(order: Int) = Prototype.bessel(order)
+  def calculateRoots(order: Int) = Approximation.bessel(order)
 
   @Test
   def shouldCalculateTwoOrderPrototype() = {
@@ -39,7 +39,7 @@ class BesselPrototypeTest {
     val reversedPoles = roots.map(1/_)
 
 
-    assertEquals(Prototype.normFactor(reversedPoles, a_last), 1.7556723686, 0.001)
+    assertEquals(Approximation.normFactor(reversedPoles, a_last), 1.7556723686, 0.001)
   }
 
 

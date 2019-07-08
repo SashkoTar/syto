@@ -2,6 +2,7 @@ package com.sparja.syto
 
 import breeze.linalg.{DenseMatrix, DenseVector, diag}
 import breeze.math.Complex
+import org.apache.commons.math3.util.FastMath
 
 package object math {
 
@@ -18,10 +19,13 @@ package object math {
   def pow(x: Double, y: Double) = scala.math.pow(x, y)
 
   def max(x: Double, y: Double) = scala.math.max(x,y)
+
   def max(x: Int, y: Int) = scala.math.max(x,y)
 
   val PI = scala.math.Pi
 
+
+  def log10(x: Double) = breeze.numerics.log10(x)
 
   private def log(z: Complex) = {
     z.log
@@ -47,8 +51,16 @@ package object math {
 
   def atan(x: Double) = scala.math.atan(x)
 
+  def asinh(x: Double) = FastMath.asinh(x)
+
+  def sinh(x: Double) = FastMath.sinh(x)
+
+  def cosh(x: Double) = Math.cosh(x)
+
+  def abs(x: Double) = Math.abs(x)
+
   //TODO Review n calculation,
-  def companionByPolynomial(a: List[Double]) = {
+  def companionByPolynomial(a: Seq[Double]) = {
     val n  = a.size
     val v1 = diag(DenseVector.ones[Double](n-2))
     val zeros = DenseVector.zeros[Double](n-2).asDenseMatrix.reshape(n-2, 1)

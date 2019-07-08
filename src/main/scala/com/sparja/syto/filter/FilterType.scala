@@ -11,7 +11,7 @@ object FilterType {
     val scale = roots.scale
     val degree = poles.size - zeros.size
     Roots(
-      zeros.map(cutOffFrequency / _) ::: List.fill(degree)(Complex.zero),
+      zeros.map(cutOffFrequency / _) ++ List.fill(degree)(Complex.zero),
       poles.map(cutOffFrequency / _),
       scale * Math.pow(-1, poles.size) * zeros.product.real / poles.product.real
     )
@@ -48,8 +48,8 @@ object FilterType {
     }
 
     Roots(
-      (zeros.map(transformPoint) ::: zeros.map(transformPoint2)).map(_.unary_-) ::: List.fill(degree)(Complex.zero),
-      (poles.map(transformPoint) ::: poles.map(transformPoint2)).map(_.unary_-),
+      (zeros.map(transformPoint) ++ zeros.map(transformPoint2)).map(_.unary_-) ++ List.fill(degree)(Complex.zero),
+      (poles.map(transformPoint) ++ poles.map(transformPoint2)).map(_.unary_-),
       scale * pow(bandWidth, degree)
     )
   }
@@ -72,8 +72,8 @@ object FilterType {
     }
 
     Roots(
-      (zeros.map(transformPoint) ::: zeros.map(transformPoint2)).map(_.unary_-)  ::: List.fill(degree)(wo*Complex.i) ::: List.fill(degree)(wo*Complex.i.unary_-),
-      (poles.map(transformPoint) ::: poles.map(transformPoint2)).map(_.unary_-),
+      (zeros.map(transformPoint) ++ zeros.map(transformPoint2)).map(_.unary_-)  ++ List.fill(degree)(wo*Complex.i) ++ List.fill(degree)(wo*Complex.i.unary_-),
+      (poles.map(transformPoint) ++ poles.map(transformPoint2)).map(_.unary_-),
       (scale * zeros.map(_.unary_-).product/poles.map(_.unary_-).product).real
     )
   }

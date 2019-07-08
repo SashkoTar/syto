@@ -1,14 +1,14 @@
 package com.sparja.syto.filter.core
 
 import breeze.math.Complex
-import com.sparja.syto.filter.Prototype
+import com.sparja.syto.filter.Approximation
 import com.sparja.syto.util.ComplexAssertion
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
 class EllipticPrototypeTest {
 
-  def calculateRoots(order: Int) = Prototype.elliptic(order, 1, 45)
+  def calculateRoots(order: Int) = Approximation.elliptic(order, 1, 45)
 
   @Test
   def shouldCalculateThreeOrderPrototype() = {

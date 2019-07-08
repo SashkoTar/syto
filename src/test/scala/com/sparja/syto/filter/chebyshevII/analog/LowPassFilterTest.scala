@@ -1,7 +1,7 @@
 package com.sparja.syto.filter.chebyshevII.analog
 
 
-import com.sparja.syto.filter.{Prototype, TransferFunctionBuilder}
+import com.sparja.syto.filter.{Approximation, TransferFunctionBuilder}
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
@@ -10,7 +10,7 @@ class LowPassFilterTest {
 
   def calculateCoefficients(order: Int, ripple: Double, cufOffFreq: Double) = {
     new TransferFunctionBuilder()
-      .prototype(Prototype.chebyshevII, order, ripple)
+      .chebyshevIIApproximation(order, ripple)
       .transformToLowPass(cufOffFreq)
       .coefficients
   }

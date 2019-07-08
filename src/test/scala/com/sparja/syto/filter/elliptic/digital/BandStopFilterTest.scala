@@ -1,16 +1,15 @@
 package com.sparja.syto.filter.elliptic.digital
 
-import com.sparja.syto.filter.{Prototype, Roots, TransferFunctionBuilder}
-import com.sparja.syto.filter.elliptic.EllipticMockedPrototypeRoots
+import com.sparja.syto.filter.{Approximation, Roots, TransferFunctionBuilder}
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
 class BandStopFilterTest {
 
 
-  def calculateCoefficients(f: () => Roots, lowFreq: Double, highFreq: Double, sampleFreq: Double) = {
+  def calculateCoefficients(order: Int, ripplePass: Double, rippleStop: Double, lowFreq: Double, highFreq: Double, sampleFreq: Double) = {
     new TransferFunctionBuilder()
-      .prototype(f)
+      .ellipticApproximation(order, ripplePass, rippleStop)
         .digitalize(sampleFreq)
       .transformToBandStop(lowFreq, highFreq)
       .coefficients
@@ -18,7 +17,7 @@ class BandStopFilterTest {
 
   @Test
   def shouldCalculateTwoOrderFilter() = {
-    val (b, a) = calculateCoefficients(() => Prototype.elliptic(2, 5, 40), 10.0, 20.0, 50.0)
+    val (b, a) = calculateCoefficients(2, 5, 40, 10.0, 20.0, 50.0)
     assertEquals(a(0), 1.0, 0.001)
     assertEquals(a(1), 0.808429310027, 0.001)
     assertEquals(a(2), 0.359935820127, 0.001)
@@ -33,7 +32,7 @@ class BandStopFilterTest {
 
   @Test
   def shouldCalculateThreeOrderFilter() = {
-    val (b, a) = calculateCoefficients(() => Prototype.elliptic(3, 5, 40), 10.0, 20.0, 50.0)
+    val (b, a) = calculateCoefficients(3, 5, 40, 10.0, 20.0, 50.0)
     assertEquals(a(0), 1.0, 0.001)
     assertEquals(a(1), 1.10486180585, 0.001)
     assertEquals(a(2), 0.388240957997, 0.001)

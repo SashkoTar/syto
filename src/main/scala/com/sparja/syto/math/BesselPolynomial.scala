@@ -3,7 +3,6 @@ package com.sparja.syto.math
 //TODO Add to Polynomial hierarchy
 
 
-
 private[syto] object BesselPolynomial {
 
   //TODO refactor to be Polynomial. Quit ugly solution however workable
@@ -21,7 +20,7 @@ private[syto] object BesselPolynomial {
       //println(s"Next coeff is $coeff")
       val p1 = calculate(order - 1).coefficients.map(_.multiply(coeff))
       val p2 = calculate(order - 2).coefficients
-      val polSum = (p1:::p2).groupBy(_.degree)
+      val polSum = (p1++p2).groupBy(_.degree)
         .mapValues(_.reduce((a, b) => a.add(b))).values.toList.sortWith(_.degree > _.degree)
       return Polynomial(polSum)
     }
