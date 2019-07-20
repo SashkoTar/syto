@@ -27,7 +27,7 @@ to solve this task
 ## Syto as Maven dependency
 
 ## Usage
-Having done some calculation user comes to conclusion that he needs digital third order low-pass Butterworth filter with cutOff frequency 3.5 Hz sampled at rate 30 Hz. Therefore to get cooficients for transfer function polynomials user has to call such chain 
+Having done some calculation user comes to conclusion that he needs digital third order low-pass Butterworth filter with cutOff frequency 3.5 Hz, sampled at rate 30 Hz. Therefore to get cooficients for transfer function polynomials user has to call such chain 
 
 ```scala 
    val (b, a) = new TransferFunctionBuilder()
@@ -41,4 +41,4 @@ Then user can start filtering itself using lfilter method
 ```scala 
   val y = lfilter(b, a, x) // x is sequence of input signals 
 ```
-
+As alternative another method - filtfilt - can be used which applies linear filter twice 
