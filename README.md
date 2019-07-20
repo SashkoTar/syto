@@ -38,7 +38,7 @@ Having done some calculation user comes to conclusion that he needs digital thir
 ```
 
 Then user can start filtering itself using lfilter method
-
-``` val y = lfilter(b, a, x) // x is sequence of input signals 
+```scala 
+  val y = lfilter(b, a, x) // x is sequence of input signals 
 ```
 
