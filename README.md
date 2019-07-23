@@ -27,6 +27,14 @@ The great advancements in the filter design theory have given a birth to several
 Normalized analog filter is the filter in which the cutoff frequency is equal to 1 rad/sec
 
 ## Types of approximation
+The most popular approximation methods are as follows:
+- Butterworth
+- Chebyshev
+- Inverse-Chebyshev
+- Elliptic
+- Bessel-Thomson
+
+and all these five types had been implemented in Syto
 
 ## Types of filters
 
@@ -42,6 +50,10 @@ mvn clean package
 ```
 
 ## Syto as Maven dependency
+
+```bash
+to be defined
+```
 
 ## Usage guide
 
