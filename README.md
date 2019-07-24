@@ -18,7 +18,7 @@ to solve this task
 At its current stage Syto implements IIR filters only. However, as Syto is young and growing library
 its API will be enriched to design other families of filters soon. But for a while please keep in mind that all info below is about IIR filter only.  
 
-The great advancements in the filter design theory have given a birth to several techniques of generating the transfer functions with expected characterisitcs. Each of them has its own pros and cons but in the majority of cases the classical approach is used. Syto exploites this method as well. It consists of three fundamental steps:
+The great advancements in the filter design theory have given a birth to several techniques of generating the transfer functions with expected characterisitcs. Each of them has its own pros and cons but in the majority of cases the classical approach is used. Syto exploits this method as well. It consists of three fundamental steps:
 
 1) Find a transfer function of normalized analog filter by applying one of known approximation
 2) By means of frequency transformation, obtain the transfer function of the desired filter: lowpass, highpass, bandpass or bandstop
@@ -37,9 +37,11 @@ The most popular approximation methods are as follows:
 and all these five types had been implemented in Syto
 
 ## Frequency transformations
-After normalized lowpass filter H(s) is designed according to the one of approximation methods mentioned above, the frequency transformation is applied to obtain the transfer function for required filter. There are four transformations that map the magnitude response of analog normalized filter to that of specified lowpass, highpass, bandpass or bandstop filters
+After normalized lowpass filter H(s) is designed according to the one of approximation methods mentioned above, the frequency transformation is applied to obtain the transfer function for required filter. There are four transformations that map the magnitude response of analog normalized filter to that of specified _lowpass_, _highpass_, _bandpass_ or _bandstop_ filters
 
 ## Filtering
+
+There are different schemas to implement filtering itself. Syto uses _direct form II structure_
 
 # Getting started with Syto
 
@@ -69,9 +71,9 @@ Having done some calculation user comes to conclusion that he needs digital thir
 
 ```scala 
    val (b, a) = new TransferFunctionBuilder()
-      .butterworthApproximation(3)
-      .digitalize(30)
-      .transformToLowPass(3.5)
+      .butterworthApproximation(3)  // The order of Butterworth filter
+      .digitalize(30)  // digital filter with sampling rate at 30 Hz
+      .transformToLowPass(3.5) // Low-pass filter with cutoff frequency 3.5Hz
       .coefficients
 ```
 
