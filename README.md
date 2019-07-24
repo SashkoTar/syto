@@ -36,7 +36,8 @@ The most popular approximation methods are as follows:
 
 and all these five types had been implemented in Syto
 
-## Types of filters
+## Frequency transformations
+After normalized lowpass filter H(s) is designed according to the one of approximation methods mentioned above, the frequency transformation is applied to obtain the transfer function for required filter. There are four transformations that map the magnitude response of analog normalized filter to that of specified lowpass, highpass, bandpass or bandstop filters
 
 ## Filtering
 
