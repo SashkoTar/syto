@@ -79,6 +79,32 @@ package object filter {
     builder.result
   }
 
+
+  def filterForward(b: Seq[Double], a: Seq[Double], inputSeq: Seq[Double], z: Option[Seq[Double]] = None): Seq[Double] = {
+    val abSz = com.sparja.syto.math.max(a.size, b.size)
+
+    var fifo = z match {
+      case Some(zeroInput) => zeroInput.toList
+      case None => List.fill(abSz-1)(0.0)
+    }
+
+
+    def push(e: Double) = fifo = (e :: fifo).take(abSz-1)
+
+    def calcNext(x: Double) = {
+      val zNext = x - a.tail.zip(fifo)
+        .map(z => z._1 * z._2)
+        .sum
+
+      val y = b.head * zNext + b.tail.zip(fifo).map(z => z._1 * z._2).sum
+      push(zNext)
+      y
+    }
+
+    inputSeq map calcNext
+  }
+
+
   /**
     * Computes the steady state of the filter.
     *
@@ -120,10 +146,10 @@ package object filter {
     }
     val zi = calculateZi(b, a).toArray.toList
     val x0 = ext.head
-    val yFwd = filter(b, a, ext, Some(zi.map(_ * x0)))
+    val yFwd = filterForward(b, a, ext, Some(zi.map(_ * x0)))
     val y0 = yFwd.reverse.head
 
-    val yBack = filter(b, a, yFwd.reverse, Some(zi.map(_ * y0)))
+    val yBack = filterForward(b, a, yFwd.reverse, Some(zi.map(_ * y0)))
     yBack.reverse.drop(edge).dropRight(edge)
   }
 
@@ -143,13 +169,13 @@ package object filter {
     (tL, xx.toList)
   }
 
-  //TODO Build graph and use in next reales
+  //TODO Build graph and use in next release
   private[filter] def frequencyResponse(a: Seq[Double], b: Seq[Double], f0: Double, fs: Float): Double = {
     val angle = 2 * Math.PI * f0 / fs
     val z = Complex(cos(angle), sin(angle))
     val numerator = b.zipWithIndex.map(e => e._1 * z.pow(-e._2)).sum
-    val denumerator = a.zipWithIndex.map(e => e._1 * z.pow(-e._2)).sum
-    (numerator / denumerator).abs
+    val denominator = a.zipWithIndex.map(e => e._1 * z.pow(-e._2)).sum
+    (numerator / denominator).abs
   }
 
 
