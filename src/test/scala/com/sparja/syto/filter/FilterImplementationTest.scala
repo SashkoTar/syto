@@ -48,6 +48,22 @@ class FilterImplementationTest {
 
   }
 
+  @Test
+  def shouldFilterTenSignalsWithInitialStateThreeOrder() = {
+    val a = List(1, -1.16191748, 0.69594276, -0.1377613)
+    val b = List(0.049533, 0.14859899, 0.14859899, 0.049533)
+    val x = (1 to 10).map(_.toDouble).toList
+    val zi = List(0.950467, -0.36004947, 0.1872943)
+    val y = filter(b, a, x, Some(zi) )
+    // List(1.0, 1.049533, 1.30521824853684, 1.9145622554588588, 2.847715121349679, 3.9393807100028084, 5.038593061324188, 6.080866675695962, 7.073566980230734, 8.049332943104032)
+
+    println(y)
+    println("----------------------------------------")
+    val y2 = filterForward(b, a, x, Some(zi))
+    println(y2)
+
+  }
+
 
   @Test
   def shouldFilterForwardTenSignalsThreeOrder() = {
