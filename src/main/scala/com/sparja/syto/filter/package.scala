@@ -2,102 +2,41 @@ package com.sparja.syto
 
 import breeze.linalg.{DenseMatrix, DenseVector}
 import breeze.math.Complex
-import breeze.numerics.{cos, sin}
-import com.sparja.syto.math.companionByPolynomial
-import scala.collection.Iterator
-import scala.collection.generic.CanBuildFrom
+import com.sparja.syto.math.{companionByPolynomial, cos, max, sin}
 import scala.collection.immutable.Seq
-import scala.reflect.ClassTag
 
 package object filter {
 
-  def filter[ /*@specialized(Float, Double)*/ T, A, B, C, Repr]
-  (b: Seq[B], a: Seq[A], x: Repr, si: Option[Seq[C]] = None)
-  (implicit seqX: Repr => Seq[T],
-   n: Fractional[T],
-   aToT: A => T,
-   bToT: B => T,
-   cToT: C => T,
-   bf: CanBuildFrom[Repr, T, Repr],
-   m: ClassTag[T]): Repr = {
 
-    import n._
+  /**
+    * Filters a data sequence, "inputSeq", using digital filter, defined by transfer function.
+    * It's direct form II transposed implementation which solves the difference equation
+    * @param b Coefficients of polynomial from numerator of transfer function
+    * @param a Coefficients of denominator from numerator of transfer function
+    * @param inputSeq Input sequence to be filtered
+    * @param initState Initial conditions for the filter delays
+    * @return Filter output
+    * @author Oleksandr Tarasenko <sashko.tarasenko@gmail.com>
+    */
 
-    val filterIterator = new Iterator[T] {
-      // normalize a and b; dividing both by a(0), and pad them with zeros so
-      //  they're the same length as each other
-      private val a0: T = a.head
-      private val abSz = com.sparja.syto.math.max(a.size, b.size)
-      private val aNorm = a.map(implicitly[T](_) / a0).toIndexedSeq.
-        padTo(abSz, n.zero)
-      private val bNorm = b.map(implicitly[T](_) / a0).toIndexedSeq.
-        padTo(abSz, n.zero)
+  def filterForward(b: Seq[Double], a: Seq[Double], inputSeq: Seq[Double], initState: Option[Seq[Double]] = None): Seq[Double] = {
+    val delaysLength = max(a.size, b.size)
+    val filterOrder = delaysLength - 1
 
-      // create initial state array; use zeroes if it's not provided
-      private val z: Array[T] = (if (si.isDefined) {
-        si.get.map {
-          implicitly[T](_)
-        }
-      } else {
-        List.fill(abSz - 1)(n.zero)
-      }).toArray
-      if (z.size != abSz - 1) {
-        throw new IllegalArgumentException(
-          "si.size must be (max(a.size, b.size) - 1)")
-      }
-
-      // method to update the state array (z) on each iteration
-      private def updateZ(z: Array[T],
-                          bTail: Seq[T], aTail: Seq[T],
-                          xm: T, ym: T) {
-        for (i <- 0 until (z.size - 1)) {
-          z(i) = bTail(i) * xm + z(i + 1) - aTail(i) * ym
-        }
-        z(z.size - 1) = bTail(z.size - 1) * xm - aTail(z.size - 1) * ym
-      }
-
-      private val b0 = bNorm.head
-      private val aTail = aNorm.tail
-      private val bTail = bNorm.tail
-
-      private val xIterator = x.iterator
-
-      override def hasNext: Boolean = xIterator.hasNext
-
-      override def next(): T = {
-        val xm: T = xIterator.next
-        val ym: T = b0 * xm + z(0)
-        updateZ(z, bTail, aTail, xm, ym)
-        ym
-      }
+    val delays = initState match {
+      case Some(zeroPoint) => zeroPoint.padTo(delaysLength, 0.0).toArray // To cast "delays" updating loop to general form
+      case None => Array.fill(delaysLength)(0.0)
     }
-
-    // we create a builder here; for lazy collections (eg. Stream), the
-    //  filterIterator should also be evaluated lazily
-    val builder = bf(x)
-    builder ++= filterIterator
-    builder.result
-  }
-
-
-  def filterForward(b: Seq[Double], a: Seq[Double], inputSeq: Seq[Double], z: Option[Seq[Double]] = None): Seq[Double] = {
-    val abSz = com.sparja.syto.math.max(a.size, b.size)
-
-    var fifo = z match {
-      case Some(zeroInput) => zeroInput.toList
-      case None => List.fill(abSz-1)(0.0)
-    }
-
-
-    def push(e: Double) = fifo = (e :: fifo).take(abSz-1)
+    if(delays.length != delaysLength) throw
+      new IllegalArgumentException(s"The length of initState must be equal to filter's order which is ${filterOrder} ")
 
     def calcNext(x: Double) = {
-      val zNext = x - a.tail.zip(fifo)
-        .map(z => z._1 * z._2)
-        .sum
+      val y = b.head * x + delays.head
 
-      val y = b.head * zNext + b.tail.zip(fifo).map(z => z._1 * z._2).sum
-      push(zNext)
+      for (i <- 1 to filterOrder) {
+        delays(i - 1) = b(i) * x - a(i) * y + delays(i)
+      }
+
       y
     }
 
@@ -135,13 +74,21 @@ package object filter {
     zi
   }
 
+  /**
+    * Filters a data sequence, "inputSeq", using digital filter, defined by transfer function.
+    * This method filters the input signal twice, forward and backwards. Such filter has zero phase.
+    * @param b Coefficients of polynomial from numerator of transfer function
+    * @param a Coefficients of denominator from numerator of transfer function
+    * @param inputSeq Input sequence to be filtered
+    * @return Filter output
+    * @author Oleksandr Tarasenko <sashko.tarasenko@gmail.com>
+    */
 
   //TODO Change to use Double, Float
-  def filtfilt(b: Seq[Double], a: Seq[Double], x: Seq[Double]): Seq[Double] = {
+  def filtfilt(b: Seq[Double], a: Seq[Double], inputSeq: Seq[Double]): Seq[Double] = {
+    val (edge, ext) = generatePad(b, a, inputSeq)
 
-    val (edge, ext) = generatePad(b, a, x)
-
-    if (edge > x.size) {
+    if (edge > inputSeq.size) {
       throw new IllegalArgumentException(s"Input too short. It should be more than ${edge} elements")
     }
     val zi = calculateZi(b, a).toArray.toList
