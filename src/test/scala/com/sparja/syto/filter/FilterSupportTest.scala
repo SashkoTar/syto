@@ -1,12 +1,9 @@
 package com.sparja.syto.filter
 
-import breeze.math.Complex
-import breeze.numerics.{cos, sin}
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
 class FilterSupportTest {
-
 
   @Test
   def shouldCalculateFrequencyResponse() = {
@@ -15,7 +12,7 @@ class FilterSupportTest {
     val f0 = Math.sqrt(18*22)
     val fs = 100
 
-    val magnitude = FilterSupport.frequencyResponse(a, b, f0, fs)
+    val magnitude = frequencyResponse(a, b, f0, fs)
     assertEquals(1/magnitude, 0.0133592, 0.001)
   }
 
