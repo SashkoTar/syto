@@ -1,12 +1,12 @@
-package org.world.uat
+package net.sparja.syto.filter.bessel.digital
 
-import net.sparja.syto.filter.TransferFunctionBuilder
+import net.sparja.syto.filter.{Approximation, Roots, TransferFunctionBuilder}
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
-class BesselFilterTest {
+class BandPassFilterTest {
 
-  def calculateCoefficients(order: Int, lowFreq: Double, highFreq: Double, sampleFreq: Double, norm: String = "phase") = {
+  def calculateCoefficients(order: Int, lowFreq: Double, highFreq: Double, sampleFreq: Double, norm: String="phase") = {
     new TransferFunctionBuilder()
       .besselApproximation(order, norm)
       .digitalize(sampleFreq)
@@ -51,7 +51,7 @@ class BesselFilterTest {
 
   @Test
   def shouldCalculateThreeOrderFilterNormDelay() = {
-    val (b, a) = calculateCoefficients(3,  10.0, 20.0, 50.0, "delay")
+    val (b, a) = calculateCoefficients(3, 10.0, 20.0, 50.0, "delay")
     assertEquals(a(0), 1.0, 0.001)
     assertEquals(a(1), 0.788279959709, 0.001)
     assertEquals(a(2), -0.710569751956, 0.001)
@@ -86,7 +86,6 @@ class BesselFilterTest {
     assertEquals(b(5), 0.0, 0.001)
     assertEquals(b(6), -0.149411432877, 0.001)
   }
-
 
 
 }

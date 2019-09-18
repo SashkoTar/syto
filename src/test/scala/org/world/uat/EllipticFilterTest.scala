@@ -1,6 +1,6 @@
 package org.world.uat
 
-import com.sparja.syto.filter.TransferFunctionBuilder
+import net.sparja.syto.filter.TransferFunctionBuilder
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
