@@ -3,6 +3,8 @@
 /.idea
 /hpeq
 /venv
+jar-gpg-keys.info
+sonatype_backup.key
 hpeq.zip
 lines.png
 *.iml

@@ -55,7 +55,11 @@ mvn clean package
 ## Syto as Maven dependency
 
 ```bash
-to be defined
+<dependency>
+  <groupId>net.sparja</groupId>
+  <artifactId>syto</artifactId>
+  <version>0.1.1</version>
+</dependency>
 ```
 
 ## Usage guide
